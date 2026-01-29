@@ -1,0 +1,81 @@
+------------------------------------------------------------------------------------------------------------------------
+Phase 1: Project Setup & Environment
+------------------------------------------------------------------------------------------------------------------------
+* [ ] **Create the Directory Structure**: Manually create the folders and empty files as specified in the project
+    requirements (e.g., `config/`, `data/`, `models/`, `training/`, `evaluation/`).
+* [ ] **Set Up Virtual Environment**: Create a Python environment and a `requirements.txt` file to pin package versions.
+* [ ] **Implement Global Seed**: In a main script or utility file, create the `set_seed(seed=42)` function using `torch`
+    , `numpy`, and `random` to ensure results are identical every time the code runs .
+* [ ] **Disable CuDNN Benchmarking**: Ensure `torch.backends.cudnn.benchmark = False` and `deterministic = True` are
+    set inside your seed function to prevent hardware-level randomness .
+
+------------------------------------------------------------------------------------------------------------------------
+Phase 2: Data Loading & Preprocessing
+------------------------------------------------------------------------------------------------------------------------
+
+The goal is to prepare the **CIFAR-10** dataset (10 classes of  images) for the models .
+
+* [ ] **Create the Data Loader**: Use `torchvision.datasets.CIFAR10` to download the training and test sets .
+* [ ] **Define Baseline Transforms**:
+* [ ] Use `transforms.ToTensor()` to convert images to tensors.
+* [ ] Use `transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))` to scale pixel values from  to the  range
+    required for Tanh activation .
+* [ ] **Implement Training-Only Augmentation**: Research and add transformations like `RandomHorizontalFlip` or
+    `ColorJitter` to the training pipeline to help the discriminator generalize .
+* [ ] **Validate Test Set Transforms**: Ensure the test/validation sets **only** use `ToTensor` and `Normalize`, never
+    augmentation.
+
+------------------------------------------------------------------------------------------------------------------------
+Phase 3: Baseline Architecture Implementation
+------------------------------------------------------------------------------------------------------------------------
+Implement a conditional DCGAN (Deep Convolutional GAN).
+### The Generator (Upsampling)
+* [ ] **Conditioning**: Use `torch.nn.Embedding` to turn class labels into vectors.
+* [ ] **Input Layer**: Concatenate the latent vector  (size 100) with the class embedding.
+* [ ] **Architecture Steps**:
+* [ ] Project and reshape the input to .
+* [ ] Use four `ConvTranspose2d` layers to upsample from  to  .
+* [ ] Apply **Batch Normalization** and **ReLU** after each layer (except the output).
+* [ ] Use **Tanh** for the final output layer to match the  image range.
+
+### The Discriminator (Downsampling)
+* [ ] **Architecture Steps**:
+* [ ] Use four `Conv2d` layers with a `stride=2` to downsample from  to  .
+* [ ] Use **Leaky ReLU** (slope 0.2) as the activation function.
+* [ ] Apply **Batch Normalization** starting from the second layer.
+* [ ] **Output Layer**: Flatten the final feature map and project it to a single scalar (the real/fake probability).
+
+------------------------------------------------------------------------------------------------------------------------
+## Phase 4: Training & Evaluation Logic
+------------------------------------------------------------------------------------------------------------------------
+
+* [ ] **Loss & Optimizer**: Use `BCELoss` (Binary Cross-Entropy) and the `Adam` optimizer with .
+* [ ] **Training Loop**:
+* [ ] Train the Discriminator and Generator in a **1:1 ratio** for the baseline.
+* [ ] Set initial learning rates to  for both.
+* [ ] **Visualization Scripts**:
+* [ ] Write a script to generate a grid of images for specific classes.
+* [ ] Implement **Latent Space Interpolation**: Create a smooth transition between two noise vectors to check if the
+    model is learning a meaningful space.
+* [ ] Implement **Class Variation**: Fix the noise  but change the class label to see how the "base structure" adapts.
+
+------------------------------------------------------------------------------------------------------------------------
+## Phase 5: Architecture Improvement & Tuning
+------------------------------------------------------------------------------------------------------------------------
+This is the creative portion of the project.
+* [ ] **Experiment with Advanced Layers**: Try adding **Residual Connections**, **Attention mechanisms**, or **Spectral
+    Normalization** to stabilize training.
+* [ ] **Test Alternative Losses**: Implement **WGAN-GP** or **LSGAN** to see if they reduce mode collapse compared to
+    vanilla GAN loss.
+* [ ] **Structured Hyperparameter Tuning**:
+* [ ] Vary learning rates (e.g.,  to ) methodically.
+* [ ] Experiment with training ratios (e.g., training the discriminator 2 or 3 times for every 1 generator update).
+* [ ] Document every change and its effect on visual quality and loss curves.
+
+------------------------------------------------------------------------------------------------------------------------
+## Phase 6: Final Submission & Presentation
+------------------------------------------------------------------------------------------------------------------------
+* [ ] **Finalize README.md**: Include clear setup instructions and hardware requirements .
+* [ ] **Prepare Presentation**: Structure a 30-35 minute talk covering GAN theory, your architecture changes, and
+    side-by-side visual comparisons of results .
+* [ ] **Email Submission**: Request an upload link from the course leader and include all group member names.
