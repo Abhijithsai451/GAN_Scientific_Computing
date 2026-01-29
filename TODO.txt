@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------------------------------------------------------
 Phase 1: Project Setup & Environment
 ------------------------------------------------------------------------------------------------------------------------
-* [ ] **Create the Directory Structure**: Manually create the folders and empty files as specified in the project
+* [Done ] **Create the Directory Structure**: Manually create the folders and empty files as specified in the project
     requirements (e.g., `config/`, `data/`, `models/`, `training/`, `evaluation/`).
-* [ ] **Set Up Virtual Environment**: Create a Python environment and a `requirements.txt` file to pin package versions.
+* [Done ] **Set Up Virtual Environment**: Create a Python environment and a `requirements.txt` file to pin package versions.
 * [ ] **Implement Global Seed**: In a main script or utility file, create the `set_seed(seed=42)` function using `torch`
     , `numpy`, and `random` to ensure results are identical every time the code runs .
 * [ ] **Disable CuDNN Benchmarking**: Ensure `torch.backends.cudnn.benchmark = False` and `deterministic = True` are
