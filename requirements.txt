@@ -7,8 +7,10 @@ pandas==2.2.3
 # Visualization
 matplotlib==3.10.0
 seaborn==0.13.2
+tensorboard
 
 # Utilities
 pyyaml==6.0.2
 tqdm==4.67.1
 pillow==11.1.0
+

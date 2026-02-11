@@ -19,10 +19,13 @@ class Config:
 
 def get_args():
     """Reads the config file name from the terminal command"""
-    parser = argparse.ArgumentParser(description="cGAN Training")
+    parser = argparse.ArgumentParser(description="GAN Training")
     parser.add_argument('--config', type=str, default='baseline_config.yaml',
                         help='Name of the config file in the config/ folder')
-    return parser.parse_args()
+    args = parser.parse_args()
+    config_path = os.path.join('config', args.config)
+    print(args.config)
+    return config_path
 
 """
 args = get_args()

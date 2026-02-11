@@ -2,7 +2,7 @@ import os
 import torch
 from torchvision import transforms
 from torchvision.utils import save_image
-from utils.random_config import set_seed
+from utils.randomizer_config import set_seed
 
 set_seed(42)
 TIN_MEAN = (0.5, 0.5, 0.5)

@@ -45,10 +45,17 @@ Implement a conditional DCGAN (Deep Convolutional GAN).
 * [ ] Apply **Batch Normalization** starting from the second layer.
 * [ ] **Output Layer**: Flatten the final feature map and project it to a single scalar (the real/fake probability).
 
+* [ ] **Implement YAML Configuration**: Create a `configs/` directory with `base_config.yaml` to handle:
+    * Hyperparameters (learning rate, beta1, beta2, batch size).
+    * Model architecture specs (latent_dim, feature_maps, num_classes).
+    * Dataset paths and augmentation toggles.
+* [ ] **Develop Config Loader**: Create `utils/config_manager.py` to parse YAML files and provide a unified configuration
+    object to the trainer and models.
+* [ ] **Modularize Model Definitions**:
+    * Refactor `models/generator.py` and `models/discriminator.py` to be dynamically built based on config parameters.
 ------------------------------------------------------------------------------------------------------------------------
 ## Phase 4: Training & Evaluation Logic
 ------------------------------------------------------------------------------------------------------------------------
-
 * [ ] **Loss & Optimizer**: Use `BCELoss` (Binary Cross-Entropy) and the `Adam` optimizer with .
 * [ ] **Training Loop**:
 * [ ] Train the Discriminator and Generator in a **1:1 ratio** for the baseline.
@@ -58,7 +65,14 @@ Implement a conditional DCGAN (Deep Convolutional GAN).
 * [ ] Implement **Latent Space Interpolation**: Create a smooth transition between two noise vectors to check if the
     model is learning a meaningful space.
 * [ ] Implement **Class Variation**: Fix the noise  but change the class label to see how the "base structure" adapts.
-
+* [ ] **Model Scripting/Tracing**: Implement a script to export the trained Generator to **TorchScript** (`.pt`) for
+    faster inference without a Python dependency.
+* [ ] **Weight Quantization**: Experiment with `torch.quantization.quantize_dynamic` to reduce the Generator's memory
+    footprint and speed up CPU inference for real-time use.
+* [ ] **Automated Logging**: Integrate **TensorBoard** or **MLflow** to track real-time training metrics, losses, and
+    generated sample grids automatically.
+* [ ] **Checkpointing System**: Build a robust `utils/checkpoints.py` that saves the latest model, optimizer states,
+    and the config used for that specific run.
 ------------------------------------------------------------------------------------------------------------------------
 ## Phase 5: Architecture Improvement & Tuning
 ------------------------------------------------------------------------------------------------------------------------
@@ -71,6 +85,12 @@ This is the creative portion of the project.
 * [ ] Vary learning rates (e.g.,  to ) methodically.
 * [ ] Experiment with training ratios (e.g., training the discriminator 2 or 3 times for every 1 generator update).
 * [ ] Document every change and its effect on visual quality and loss curves.
+* [ ] **Inference API**: Create a `deployment/app.py` using **FastAPI** or **Flask** to serve the Generator as a REST API.
+    * Endpoint `POST /generate`: Takes a class label and returns a generated image.
+* [ ] **Batch Inference**: Optimize the API to handle multiple generation requests simultaneously using PyTorch's batch
+    processing.
+* [ ] **Frontend Demo (Optional)**: Build a simple web interface (using Streamlit or HTML/JS) where users can select a
+    CIFAR-10 class and see the generated image in real-time.
 
 ------------------------------------------------------------------------------------------------------------------------
 ## Phase 6: Final Submission & Presentation
@@ -79,3 +99,11 @@ This is the creative portion of the project.
 * [ ] **Prepare Presentation**: Structure a 30-35 minute talk covering GAN theory, your architecture changes, and
     side-by-side visual comparisons of results .
 * [ ] **Email Submission**: Request an upload link from the course leader and include all group member names.
+* [ ] **Experiment with Advanced Layers**: Residual Connections, Attention, or Spectral Normalization.
+* [ ] **Test Alternative Losses**: WGAN-GP or LSGAN for stability.
+* [ ] **Structured Hyperparameter Tuning**: Methodically vary learning rates and training ratios.
+------------------------------------------------------------------------------------------------------------------------
+## Phase 7: Final Submission (Original Phase 6)
+------------------------------------------------------------------------------------------------------------------------
+* [ ] **Finalize README.md**: Include hardware requirements and setup.
+* [ ] **Final Presentation**: Cover GAN theory, architecture changes, and visual comparisons.
