@@ -20,9 +20,9 @@ The goal is to prepare the **CIFAR-10** dataset (10 classes of  images) for the 
 * [Done] Use `transforms.ToTensor()` to convert images to tensors.
 * [Done] Use `transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))` to scale pixel values from  to the  range
     required for Tanh activation .
-* [ ] **Implement Training-Only Augmentation**: Research and add transformations like `RandomHorizontalFlip` or
+* [Done] **Implement Training-Only Augmentation**: Research and add transformations like `RandomHorizontalFlip` or
     `ColorJitter` to the training pipeline to help the discriminator generalize .
-* [ ] **Validate Test Set Transforms**: Ensure the test/validation sets **only** use `ToTensor` and `Normalize`, never
+* [Done] **Validate Test Set Transforms**: Ensure the test/validation sets **only** use `ToTensor` and `Normalize`, never
     augmentation.
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #ML and Deep Learning
 torch==2.10.0
 torchvision==0.25.0
-numpy==2.4.1
+numpy==1.26.4
 pandas==2.2.3
 
 # Visualization

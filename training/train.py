@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 from jinja2 import optimizer
 
-from data import dataloader
-from data.data_transformer import device
+from data_processing import dataloader
+from data_processing.data_transformer import device
 from models import generator, discriminator
 
 criterion = nn.BCELoss()
