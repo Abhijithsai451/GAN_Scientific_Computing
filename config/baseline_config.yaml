@@ -20,14 +20,15 @@ logger:
   level: "INFO"
 
 model:
-  name: "baseline_model"
-  latent_dimension: 100
-  embedding_dimension: 50
-  batch_size: 128
-  num_classes: 10
-  img_size: 32
-  gen_features: 64
-  disc_features: 64
+  latent_dim : 100
+  num_classes : 10
+  embedding_dim: 50
+  generator:
+    initial_channels: 256
+    channel_sequence: [128, 64]
+  discriminator:
+    channel_sequence: [64,128,256]
+    leak_slope: 0.2
 
 trainer:
   batch_size: 128
@@ -38,5 +39,5 @@ trainer:
   beta2: 0999
   device: "mps"
 
-use_pin: False # Turn this to true when CUDA is Available.
+use_pin: False # Turn this to true only when CUDA is Available.
 seed: 42

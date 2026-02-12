@@ -13,17 +13,19 @@ Phase 1: Project Setup & Environment
 Phase 2: Data Loading & Preprocessing
 ------------------------------------------------------------------------------------------------------------------------
 
-The goal is to prepare the **CIFAR-10** dataset (10 classes of  images) for the models .
+The goal is to prepare the **CIFAR-10** dataset (10 classes of images) for the models .
 
 * [Done] **Create the Data Loader**: Use `torchvision.datasets.CIFAR10` to download the training and test sets .
 * [Done] **Define Baseline Transforms**:
 * [Done] Use `transforms.ToTensor()` to convert images to tensors.
 * [Done] Use `transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))` to scale pixel values from  to the  range
-    required for Tanh activation .
+    required for Tanh activation.
 * [Done] **Implement Training-Only Augmentation**: Research and add transformations like `RandomHorizontalFlip` or
     `ColorJitter` to the training pipeline to help the discriminator generalize .
 * [Done] **Validate Test Set Transforms**: Ensure the test/validation sets **only** use `ToTensor` and `Normalize`, never
     augmentation.
+* [] **Implement the function to directly visualize the images. Using tensor_to_images pytorch function and dataloader.
+        Use the function evaluation.visualize.visualize_images()
 
 ------------------------------------------------------------------------------------------------------------------------
 Phase 3: Baseline Architecture Implementation
@@ -31,16 +33,13 @@ Phase 3: Baseline Architecture Implementation
 Implement a conditional DCGAN (Deep Convolutional GAN).
 ### The Generator (Upsampling)
 * [ ] **Conditioning**: Use `torch.nn.Embedding` to turn class labels into vectors.
-* [ ] **Input Layer**: Concatenate the latent vector  (size 100) with the class embedding.
+* [ ] **Input Layer**: Concatenate the latent vector (size 100) with the class embedding.
 * [ ] **Architecture Steps**:
-* [ ] Project and reshape the input to .
-* [ ] Use four `ConvTranspose2d` layers to upsample from  to  .
 * [ ] Apply **Batch Normalization** and **ReLU** after each layer (except the output).
-* [ ] Use **Tanh** for the final output layer to match the  image range.
+* [ ] Use **Tanh** for the final output layer to match the image range.
 
 ### The Discriminator (Downsampling)
 * [ ] **Architecture Steps**:
-* [ ] Use four `Conv2d` layers with a `stride=2` to downsample from  to  .
 * [ ] Use **Leaky ReLU** (slope 0.2) as the activation function.
 * [ ] Apply **Batch Normalization** starting from the second layer.
 * [ ] **Output Layer**: Flatten the final feature map and project it to a single scalar (the real/fake probability).
