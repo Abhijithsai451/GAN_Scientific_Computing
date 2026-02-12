@@ -21,7 +21,6 @@ def get_test_transforms(tin_mean, tin_std):
     ])
     return transform
 
-
 def get_aug_transforms(tin_mean, tin_std):
     transform = transforms.Compose([
         transforms.Resize((32,32)),

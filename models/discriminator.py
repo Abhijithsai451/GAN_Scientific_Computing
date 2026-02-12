@@ -20,7 +20,7 @@ class Discriminator(nn.Module):
         self.block = nn.Sequential(*layers)
 
         self.classifier = nn.Sequential(
-            nn.Linear(in_features=in_channels * 4 * 4 + arch['nembed'],out_features= 1),
+            nn.Linear(in_features=in_channels * 4 * 4 + arch['embedding_dim'],out_features= 1),
             nn.Sigmoid()
         )
     def forward(self,img, labels):
