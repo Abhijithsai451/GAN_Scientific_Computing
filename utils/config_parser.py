@@ -24,7 +24,6 @@ def get_args():
                         help='Name of the config file in the config/ folder')
     args = parser.parse_args()
     config_path = os.path.join('config', args.config)
-    print(args.config)
     return config_path
 
 """

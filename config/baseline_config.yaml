@@ -1,5 +1,18 @@
 project_name: "SCP_GAN_CIFAR10_"
 
+dataset:
+  name: "CIFAR10"
+  classes: ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
+data:
+  root: "./data"
+  download: True
+  num_workers: 4
+
+data_transform:
+  tin_mean: [0.5, 0.5, 0.5]
+  tin_std : [0.5, 0.5, 0.5]
+  aug_images : 10
 logger:
   log_dir: "results/logs"
   tensorboard_dir: "results/runs"
@@ -14,7 +27,7 @@ model:
   num_classes: 10
   img_size: 32
   gen_features: 64
-  disc_featurs:
+  disc_features: 64
 
 trainer:
   batch_size: 128
@@ -24,11 +37,6 @@ trainer:
   beta1: 0.5
   beta2: 0999
   device: "mps"
-  seed: 42
-  
-data:
-  root: "./data"
-  download: True
-  num_workers: 4
 
-
+use_pin: False # Turn this to true when CUDA is Available.
+seed: 42
