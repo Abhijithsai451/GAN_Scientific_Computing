@@ -2,44 +2,30 @@ import torch
 import torch.nn as nn
 
 class Discriminator(nn.Module):
-    def __init__(self, n_classes, embedding_dim):
+    def __init__(self, config):
         super(Discriminator, self).__init__()
-        self.label_emb = nn.Embedding(n_classes, embedding_dim)
+        arch = config.model
+        self.label_embeddings = nn.Embedding(arch['num_classes'], arch['embedding_dim'])
+        channel_sequence = arch['discriminator']['channel_sequence']
+        self.leaky_slope = arch['discriminator']['leaky_slope']
+        layers = []
+        in_channels = 3
+        for i, out_channels in enumerate(channel_sequence):
+            layers.append(nn.Conv2d(in_channels, out_channels, kernel_size=4, stride=2, padding=1, bias=False))
+            if i > 0 :
+                layers.append(nn.BatchNorm2d(out_channels))
+            layers.append(nn.LeakyReLU(negative_slope= self.leaky_slope, inplace=True))
+            in_channels = out_channels
 
-        self.model = nn.Sequential(
-            #1. 3 x 64 x 64 --> 64 x 32 x 32
-            nn.Conv2d(3,64, kernel_size=4, stride=2, padding=1),
-            nn.LeakyReLU(0.2, inplace=True),
+        self.block = nn.Sequential(*layers)
 
-            #2. 128 x 16 x 16
-            nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(128),
-            nn.LeakyReLU(0.2, inplace=True),
-
-            #3. 256 x 8 x 8
-            nn.Conv2d(128, 256, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(256),
-            nn.LeakyReLU(0.2, inplace=True),
-
-            #4. 512 x 4 x 4
-            nn.Conv2d(256, 512, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(512),
-            nn.LeakyReLU(0.2, inplace=True),
+        self.classifier = nn.Sequential(
+            nn.Linear(in_features=in_channels * 4 * 4 + arch['nembed'],out_features= 1),
+            nn.Sigmoid()
         )
-
-        # Final Output Layer
-        self.final_layer = nn.Sequential(
-            nn.Linear(512 * 4 * 4 + embedding_dim, 1),
-            nn.Sigmoid() # Here The ouput we get is a probability, 0 or 1.
-        )
-
-    def forward(self, img, labels):
-        # Pass image through convolutions
-        conv_out = self.model(img)
-        conv_out = conv_out.view(conv_out.size(0), -1)  # Flatens the Image
-
-        label_embedding = self.label_emb(labels)# Concats the flattened image features with class embeddings
-        combined = torch.cat((conv_out, label_embedding), dim=1)
-
-        validity = self.final_layer(combined)
-        return validity
+    def forward(self,img, labels):
+        x = self.block(img)
+        x = torch.flatten(x, 1)
+        x = self.label_embeddings(labels)
+        x = self.classifier(x)
+        return x
