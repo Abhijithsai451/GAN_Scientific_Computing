@@ -1,4 +1,4 @@
-project_name: "SCP_GAN_CIFAR10_"
+project_name: "GAN_Baseline_MODEL"
 
 dataset:
   name: "CIFAR10"
@@ -28,7 +28,7 @@ model:
     channel_sequence: [128, 64]
   discriminator:
     channel_sequence: [64,128,256]
-    leak_slope: 0.2
+    leaky_slope: 0.2
 
 trainer:
   batch_size: 128
@@ -37,7 +37,8 @@ trainer:
   lr_d: 0.002
   beta1: 0.5
   beta2: 0999
-  device: "mps"
 
+device: "mps"
 use_pin: False # Turn this to true only when CUDA is Available.
 seed: 42
+

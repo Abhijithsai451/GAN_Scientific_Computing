@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-def weight_init(m):
+def weight_initialization(m):
     classname = m.__class__.__name__
     if "Conv" in classname:
         nn.init.normal_(m.weight.data, 0.0, 0.02)

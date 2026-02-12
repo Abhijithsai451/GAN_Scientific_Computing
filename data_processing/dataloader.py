@@ -1,5 +1,5 @@
 import torch
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, random_split, Subset
 from torchvision import datasets
 from utils.logger_config import get_logger
 from data_processing.data_transformer import get_train_transforms, get_test_transforms
