@@ -26,6 +26,7 @@ class Discriminator(nn.Module):
     def forward(self,img, labels):
         x = self.block(img)
         x = torch.flatten(x, 1)
-        x = self.label_embeddings(labels)
-        x = self.classifier(x)
-        return x
+        c = self.label_embeddings(labels)
+        combined = torch.cat((x, c), dim=1)
+        validity = self.classifier(combined)
+        return validity
