@@ -5,28 +5,39 @@ class Discriminator(nn.Module):
     def __init__(self, config):
         super(Discriminator, self).__init__()
         arch = config.model
-        self.label_embeddings = nn.Embedding(arch['num_classes'], arch['embedding_dim'])
-        channel_sequence = arch['discriminator']['channel_sequence']
-        self.leaky_slope = arch['discriminator']['leaky_slope']
+        self.num_classes = arch.get('num_classes',10)
+        self.embedding_dim = arch['embedding_dim']
+        self.label_embedding = nn.Embedding(self.num_classes, self.embedding_dim)
+
+        channels_sequence = arch['discriminator_channels']
+        self.leaky_slope = arch.get('leaky_slope',0.2)
+
         layers = []
         in_channels = 3
-        for i, out_channels in enumerate(channel_sequence):
-            layers.append(nn.Conv2d(in_channels, out_channels, kernel_size=4, stride=2, padding=1, bias=False))
-            if i > 0 :
-                layers.append(nn.BatchNorm2d(out_channels))
-            layers.append(nn.LeakyReLU(negative_slope= self.leaky_slope, inplace=True))
-            in_channels = out_channels
 
-        self.block = nn.Sequential(*layers)
+        for i, out_channels in enumerate(channels_sequence):
+            layers.append(
+                nn.Conv2d(in_channels, out_channels, kernel_size=4, stride=1, padding=1, bias = False)
+            )
+            if i > 0:
+                layers.append(nn.BatchNorm2d(out_channels))
+            layers.append(nn.LeakyReLU(self.leaky_slope, inplace=True))
+            in_channels = out_channels
+        self.features = nn.Sequential(*layers)
+
+        self.gap = nn.AdaptiveAvgPool2d((1,1))
+
+        last_out_channels = arch['discriminator_channels'][-1]
 
         self.classifier = nn.Sequential(
-            nn.Linear(in_features=in_channels * 4 * 4 + arch['embedding_dim'],out_features= 1),
+            nn.Linear(last_out_channels + self.embedding_dim, 1),
             nn.Sigmoid()
         )
-    def forward(self,img, labels):
-        x = self.block(img)
+    def forward(self, img, labels):
+        x = self.features(img)
+        x = self.gap(x)
         x = torch.flatten(x, 1)
-        c = self.label_embeddings(labels)
-        combined = torch.cat((x, c), dim=1)
+        c = self.label_embedding(labels)
+        combined = torch.cat((x, c), 1)
         validity = self.classifier(combined)
         return validity

@@ -8,36 +8,36 @@ class Generator(nn.Module):
 
         self.latent_dim = arch['latent_dim']
         self.embedding_dim = arch['embedding_dim']
-        self.num_classes = arch['num_classes']
+        self.num_classes = arch.get('num_classes',10)
         self.label_embedding = nn.Embedding(self.num_classes,self.embedding_dim)
-
         self.initial_dim = self.latent_dim + self.embedding_dim
+
+        channels_list = arch['generator_channels']
 
         # Initial Block: (latent_dim + Embeddings) --> 256 x 4 x 4
         self.init_block = nn.Sequential(
             nn.ConvTranspose2d(
                 in_channels = self.initial_dim,
-                out_channels=arch['generator']['initial_channels'],
+                out_channels=channels_list[0],
                 kernel_size=4,
                 stride=1,
                 padding=0,
                 bias = False),
-            nn.BatchNorm2d(arch['generator']['initial_channels']),
+            nn.BatchNorm2d(channels_list[0]),
             nn.ReLU(True)
         )
 
         # Hidden Layers
         layers = []
 
-        channels = arch['generator']['channel_sequence']
-        current_in = arch['generator']['initial_channels']
-        for next_channel in channels:
-            layers.append(nn.ConvTranspose2d(current_in,next_channel,kernel_size=4,stride=2,padding=1, bias = False))
-            layers.append(nn.BatchNorm2d(next_channel))
+        for i in range(len(channels_list)-1):
+            in_ch = channels_list[i]
+            out_ch = channels_list[i+1]
+            layers.append(nn.ConvTranspose2d(in_ch,out_ch,kernel_size=4,stride=2,padding=1, bias = False))
+            layers.append(nn.BatchNorm2d(out_ch))
             layers.append(nn.ReLU(True))
-            current_in = next_channel
 
-        layers.append(nn.ConvTranspose2d(current_in,out_channels = 3,kernel_size=4,stride=2,padding=1))
+        layers.append(nn.ConvTranspose2d(channels_list[-1],out_channels = 3,kernel_size=4,stride=2,padding=1))
         layers.append(nn.Tanh()) # Here the activation function ensures the output is in range of [-1,1]
 
         self.generator = nn.Sequential(*layers)

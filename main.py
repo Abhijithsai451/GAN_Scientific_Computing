@@ -1,8 +1,6 @@
 import os
-
 import torch
 from torchvision.utils import save_image
-
 from data_processing.dataloader import get_dataloaders
 from evaluation.visualize import visualize_batch
 from models.discriminator import Discriminator
@@ -90,8 +88,6 @@ def main():
                 save_path = f"results/samples/epoch_{epoch}.png"
                 save_image(fake_samples, save_path, nrow=8)
                 print(f"Saved samples to {save_path}")"""
-
-
 
     logger.info(f"Finished the Project: {config.project_name} ")
 if __name__ == "__main__":
