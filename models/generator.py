@@ -12,18 +12,17 @@ class Generator(nn.Module):
         self.label_embedding = nn.Embedding(self.num_classes,self.embedding_dim)
 
         self.initial_dim = self.latent_dim + self.embedding_dim
-        self.initial_out_dim = arch['generator']['initial_channels']
 
-        # Initial Block: (latent_dim + Embeddings) --> 256 * 4 * 4
+        # Initial Block: (latent_dim + Embeddings) --> 256 x 4 x 4
         self.init_block = nn.Sequential(
             nn.ConvTranspose2d(
                 in_channels = self.initial_dim,
-                out_channels=self.initial_out_dim,
+                out_channels=arch['generator']['initial_channels'],
                 kernel_size=4,
                 stride=1,
                 padding=0,
                 bias = False),
-            nn.BatchNorm2d(self.initial_out_dim),
+            nn.BatchNorm2d(arch['generator']['initial_channels']),
             nn.ReLU(True)
         )
 
@@ -31,21 +30,21 @@ class Generator(nn.Module):
         layers = []
 
         channels = arch['generator']['channel_sequence']
-
+        current_in = arch['generator']['initial_channels']
         for next_channel in channels:
-            layers.append(nn.ConvTranspose2d(self.initial_out_dim,next_channel,kernel_size=4,stride=2,padding=1, bias = False))
+            layers.append(nn.ConvTranspose2d(current_in,next_channel,kernel_size=4,stride=2,padding=1, bias = False))
             layers.append(nn.BatchNorm2d(next_channel))
             layers.append(nn.ReLU(True))
-            current_channel = next_channel
+            current_in = next_channel
 
-        layers.append(nn.ConvTranspose2d(current_channel,out_channels = 3,kernel_size=4,stride=2,padding=1))
+        layers.append(nn.ConvTranspose2d(current_in,out_channels = 3,kernel_size=4,stride=2,padding=1))
         layers.append(nn.Tanh()) # Here the activation function ensures the output is in range of [-1,1]
 
         self.generator = nn.Sequential(*layers)
 
     def forward(self, input, labels):
         x = input.view(input.size(0), self.latent_dim, 1,1)
-        label = self.label_embedding(labels).view(labels.size(0), self.nembed, 1, 1)
+        label = self.label_embedding(labels).view(labels.size(0), self.embedding_dim, 1, 1)
         x = torch.cat([x, label],1)
 
         x = self.init_block(x)

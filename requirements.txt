@@ -13,4 +13,5 @@ tensorboard
 pyyaml==6.0.2
 tqdm==4.67.1
 pillow==11.1.0
+pandas
 
