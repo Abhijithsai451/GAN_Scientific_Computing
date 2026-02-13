@@ -42,5 +42,9 @@ def visualize_batch(dataloader,class_names, num_images= 8,  title="CIFAR 10 Batc
     fig.show()
     logger.info("Interactive visualization rendered.")
 
-def visualize_images(dataloader, config):
-    pass
+def visualize_images(dataloader, config, num_images=16):
+    """
+    Wrapper for visualize_batch to match the TODO requirement.
+    """
+    class_names = config.dataset.get("classes")
+    visualize_batch(dataloader, class_names, num_images=num_images, title="Dataset Samples")

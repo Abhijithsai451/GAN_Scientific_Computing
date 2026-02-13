@@ -24,53 +24,53 @@ The goal is to prepare the **CIFAR-10** dataset (10 classes of images) for the m
     `ColorJitter` to the training pipeline to help the discriminator generalize .
 * [Done] **Validate Test Set Transforms**: Ensure the test/validation sets **only** use `ToTensor` and `Normalize`, never
     augmentation.
-* [] **Implement the function to directly visualize the images. Using tensor_to_images pytorch function and dataloader.
-        Use the function evaluation.visualize.visualize_images()
+* [Done] **Implement the function to directly visualize the images.** Using `tensor_to_images` pytorch function and dataloader.
+        Use the function `evaluation.visualize.visualize_images()`
 
 ------------------------------------------------------------------------------------------------------------------------
-Phase 3: Baseline Architecture Implementation
+Phase 3: Baseline Architecture Implementation [Done]
 ------------------------------------------------------------------------------------------------------------------------
 Implement a conditional DCGAN (Deep Convolutional GAN).
 ### The Generator (Upsampling)
-* [ ] **Conditioning**: Use `torch.nn.Embedding` to turn class labels into vectors.
-* [ ] **Input Layer**: Concatenate the latent vector (size 100) with the class embedding.
-* [ ] **Architecture Steps**:
-* [ ] Apply **Batch Normalization** and **ReLU** after each layer (except the output).
-* [ ] Use **Tanh** for the final output layer to match the image range.
+* [Done] **Conditioning**: Use `torch.nn.Embedding` to turn class labels into vectors.
+* [Done] **Input Layer**: Concatenate the latent vector (size 100) with the class embedding.
+* [Done] **Architecture Steps**:
+* [Done] Apply **Batch Normalization** and **ReLU** after each layer (except the output).
+* [Done] Use **Tanh** for the final output layer to match the image range.
 
 ### The Discriminator (Downsampling)
-* [ ] **Architecture Steps**:
-* [ ] Use **Leaky ReLU** (slope 0.2) as the activation function.
-* [ ] Apply **Batch Normalization** starting from the second layer.
-* [ ] **Output Layer**: Flatten the final feature map and project it to a single scalar (the real/fake probability).
+* [Done] **Architecture Steps**:
+* [Done] Use **Leaky ReLU** (slope 0.2) as the activation function.
+* [Done] Apply **Batch Normalization** starting from the second layer.
+* [Done] **Output Layer**: Flatten the final feature map and project it to a single scalar (the real/fake probability).
 
-* [ ] **Implement YAML Configuration**: Create a `configs/` directory with `base_config.yaml` to handle:
+* [Done] **Implement YAML Configuration**: Create a `configs/` directory with `base_config.yaml` to handle:
     * Hyperparameters (learning rate, beta1, beta2, batch size).
     * Model architecture specs (latent_dim, feature_maps, num_classes).
     * Dataset paths and augmentation toggles.
-* [ ] **Develop Config Loader**: Create `utils/config_manager.py` to parse YAML files and provide a unified configuration
+* [Done] **Develop Config Loader**: Create `utils/config_manager.py` (implemented as `config_parser.py`) to parse YAML files and provide a unified configuration
     object to the trainer and models.
-* [ ] **Modularize Model Definitions**:
+* [Done] **Modularize Model Definitions**:
     * Refactor `models/generator.py` and `models/discriminator.py` to be dynamically built based on config parameters.
 ------------------------------------------------------------------------------------------------------------------------
-## Phase 4: Training & Evaluation Logic
+## Phase 4: Training & Evaluation Logic [In Progress]
 ------------------------------------------------------------------------------------------------------------------------
-* [ ] **Loss & Optimizer**: Use `BCELoss` (Binary Cross-Entropy) and the `Adam` optimizer with .
-* [ ] **Training Loop**:
-* [ ] Train the Discriminator and Generator in a **1:1 ratio** for the baseline.
-* [ ] Set initial learning rates to  for both.
+* [Done] **Loss & Optimizer**: Use `BCELoss` (Binary Cross-Entropy) / `BCEWithLogitsLoss` and the `Adam` optimizer.
+* [Done] **Training Loop**:
+* [Done] Train the Discriminator and Generator in a **1:1 ratio** for the baseline.
+* [Done] Set initial learning rates to `2e-4` for both.
 * [ ] **Visualization Scripts**:
-* [ ] Write a script to generate a grid of images for specific classes.
+* [Done] Write a script to generate a grid of images for specific classes (implemented in `evaluation/visualize.py`).
 * [ ] Implement **Latent Space Interpolation**: Create a smooth transition between two noise vectors to check if the
     model is learning a meaningful space.
-* [ ] Implement **Class Variation**: Fix the noise  but change the class label to see how the "base structure" adapts.
+* [ ] Implement **Class Variation**: Fix the noise but change the class label to see how the "base structure" adapts.
 * [ ] **Model Scripting/Tracing**: Implement a script to export the trained Generator to **TorchScript** (`.pt`) for
     faster inference without a Python dependency.
 * [ ] **Weight Quantization**: Experiment with `torch.quantization.quantize_dynamic` to reduce the Generator's memory
     footprint and speed up CPU inference for real-time use.
-* [ ] **Automated Logging**: Integrate **TensorBoard** or **MLflow** to track real-time training metrics, losses, and
+* [Done] **Automated Logging**: Integrate **TensorBoard** or **MLflow** to track real-time training metrics, losses, and
     generated sample grids automatically.
-* [ ] **Checkpointing System**: Build a robust `utils/checkpoints.py` that saves the latest model, optimizer states,
+* [Done] **Checkpointing System**: Build a robust `utils/checkpoints.py` (implemented in `GANTrainer`) that saves the latest model, optimizer states,
     and the config used for that specific run.
 ------------------------------------------------------------------------------------------------------------------------
 ## Phase 5: Architecture Improvement & Tuning
