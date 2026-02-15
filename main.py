@@ -64,30 +64,30 @@ def main():
     for epoch in range(config.trainer['epochs']):
         temp_loss_g = 0.0
         temp_loss_d = 0.0
+        total_d_x = 0.0
+        total_d_gz = 0.0
 
         for i, (real_imgs, labels) in enumerate(train_loader):
             real_imgs, labels = real_imgs.to(DEVICE), labels.to(DEVICE)
             loss_d, loss_g, d_x, d_gz = trainer.train_step(real_imgs, labels)
             temp_loss_g += loss_g
             temp_loss_d += loss_d
+            total_d_x += d_x
+            total_d_gz += d_gz
+            if i % 100 == 0:
+                print(f"Epoch [{epoch}] Batch [{i}/{len(train_loader)}] | Loss D: {loss_d:.4f} | Loss G: {loss_g:.4f} ")
+
 
         # Metrics Logging
-        avg_loss_g = temp_loss_g / len(train_loader)
-        avg_loss_d = temp_loss_d / len(train_loader)
-        avg_d_x = d_x / len(train_loader)
-        avg_d_gz = d_gz / len(train_loader)
-        print(f"Epoch [{epoch}/{config.trainer['epochs']}] | Loss D: {avg_loss_d:.4f} | Loss G: {avg_loss_g:.4f}")
-
+        num_batches = len(train_loader)
+        logger.info(f"Number of Batches [{num_batches}]")
+        avg_loss_g = temp_loss_g / num_batches
+        avg_loss_d = temp_loss_d / num_batches
+        avg_d_x = total_d_x / num_batches
+        avg_d_gz = total_d_gz / num_batches
+        print(f"==> Epoch [{epoch}] Summary | Loss D: {avg_loss_d:.4f} | Loss G: {avg_loss_g:.4f} | D(x): {avg_d_x:.4f} | G(x): {avg_d_gz:.4f} ")
         tb_logger.log_epoch(epoch, avg_loss_d, avg_loss_g, avg_d_x, avg_d_gz)
-        # Saving Visual Samples
-        if epoch % 1 == 0:
-            with torch.no_grad():
-                """fake_samples = generator(fixed_noise, fixed_labels)
-                # Denormalize from [-1, 1] to [0, 1] for saving
-                fake_samples = (fake_samples + 1) / 2
-                save_path = f"results/samples/epoch_{epoch}.png"
-                save_image(fake_samples, save_path, nrow=8)
-                print(f"Saved samples to {save_path}")"""
+        # TODO
 
     logger.info(f"Finished the Project: {config.project_name} ")
 if __name__ == "__main__":

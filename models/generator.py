@@ -30,14 +30,14 @@ class Generator(nn.Module):
         # Hidden Layers
         layers = []
 
-        for i in range(len(channels_list)-1):
+        for i in range(len(channels_list)-2):
             in_ch = channels_list[i]
             out_ch = channels_list[i+1]
             layers.append(nn.ConvTranspose2d(in_ch,out_ch,kernel_size=4,stride=2,padding=1, bias = False))
             layers.append(nn.BatchNorm2d(out_ch))
             layers.append(nn.ReLU(True))
 
-        layers.append(nn.ConvTranspose2d(channels_list[-1],out_channels = 3,kernel_size=4,stride=2,padding=1))
+        layers.append(nn.ConvTranspose2d(channels_list[-2],out_channels = 3,kernel_size=4,stride=2,padding=1))
         layers.append(nn.Tanh()) # Here the activation function ensures the output is in range of [-1,1]
 
         self.generator = nn.Sequential(*layers)

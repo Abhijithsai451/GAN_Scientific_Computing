@@ -59,12 +59,12 @@ Implement a conditional DCGAN (Deep Convolutional GAN).
 * [Done] **Training Loop**:
 * [Done] Train the Discriminator and Generator in a **1:1 ratio** for the baseline.
 * [Done] Set initial learning rates to `2e-4` for both.
-* [ ] **Visualization Scripts**:
-* [Done] Write a script to generate a grid of images for specific classes (implemented in `evaluation/visualize.py`).
-* [ ] Implement **Latent Space Interpolation**: Create a smooth transition between two noise vectors to check if the
-    model is learning a meaningful space.
-* [ ] Implement **Class Variation**: Fix the noise but change the class label to see how the "base structure" adapts.
-* [ ] **Model Scripting/Tracing**: Implement a script to export the trained Generator to **TorchScript** (`.pt`) for
+* [Done] **Visualization Scripts**:
+    * [Done] Write a script to generate a grid of images for specific classes (implemented in `evaluation/visualize.py`).
+    * [Done] Implement **Latent Space Interpolation**: Create a smooth transition between two noise vectors to check if the
+        model is learning a meaningful space.
+    * [Done] Implement **Class Variation**: Fix the noise but change the class label to see how the "base structure" adapts.
+* [Done] **Model Scripting/Tracing**: Implement a script to export the trained Generator to **TorchScript** (`.pt`) for
     faster inference without a Python dependency.
 * [ ] **Weight Quantization**: Experiment with `torch.quantization.quantize_dynamic` to reduce the Generator's memory
     footprint and speed up CPU inference for real-time use.
@@ -75,7 +75,6 @@ Implement a conditional DCGAN (Deep Convolutional GAN).
 ------------------------------------------------------------------------------------------------------------------------
 ## Phase 5: Architecture Improvement & Tuning
 ------------------------------------------------------------------------------------------------------------------------
-This is the creative portion of the project.
 * [ ] **Experiment with Advanced Layers**: Try adding **Residual Connections**, **Attention mechanisms**, or **Spectral
     Normalization** to stabilize training.
 * [ ] **Test Alternative Losses**: Implement **WGAN-GP** or **LSGAN** to see if they reduce mode collapse compared to
@@ -94,15 +93,7 @@ This is the creative portion of the project.
 ------------------------------------------------------------------------------------------------------------------------
 ## Phase 6: Final Submission & Presentation
 ------------------------------------------------------------------------------------------------------------------------
-* [ ] **Finalize README.md**: Include clear setup instructions and hardware requirements .
+* [ ] **Finalize README.md**: Include clear setup instructions and hardware requirements.
 * [ ] **Prepare Presentation**: Structure a 30-35 minute talk covering GAN theory, your architecture changes, and
-    side-by-side visual comparisons of results .
+    side-by-side visual comparisons of results.
 * [ ] **Email Submission**: Request an upload link from the course leader and include all group member names.
-* [ ] **Experiment with Advanced Layers**: Residual Connections, Attention, or Spectral Normalization.
-* [ ] **Test Alternative Losses**: WGAN-GP or LSGAN for stability.
-* [ ] **Structured Hyperparameter Tuning**: Methodically vary learning rates and training ratios.
-------------------------------------------------------------------------------------------------------------------------
-## Phase 7: Final Submission (Original Phase 6)
-------------------------------------------------------------------------------------------------------------------------
-* [ ] **Finalize README.md**: Include hardware requirements and setup.
-* [ ] **Final Presentation**: Cover GAN theory, architecture changes, and visual comparisons.
