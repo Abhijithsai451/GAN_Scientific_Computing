@@ -10,6 +10,7 @@ class GANTrainer:
         self.disc = discriminator
         self.config = config
         self.device = device
+
         beta1 = float(config.trainer.get('beta1'))
         beta2 = float(config.trainer.get('beta2'))
         # Loss function & Optimizers
@@ -18,15 +19,16 @@ class GANTrainer:
                                       betas = (beta1, beta2))
         self.opt_d = torch.optim.Adam(self.disc.parameters(), lr=config.trainer['lr_d'],
                                       betas = (beta1, beta2))
+        self.static_real_label = torch.ones(config.trainer['batch_size'], 1).to(self.device)
+        self.static_fake_label = torch.zeros(config.trainer['batch_size'], 1).to(self.device)
 
     def train_step(self, real_imgs, labels):
         batch_size = real_imgs.size(0)
 
-        real_label = torch.ones(batch_size, 1).to(self.device)
-        fake_label = torch.zeros(batch_size, 1).to(self.device)
-
+        real_label = self.static_real_label[:batch_size]
+        fake_label = self.static_fake_label[:batch_size]
         # Train Discriminator
-        self.opt_d.zero_grad()
+        self.opt_d.zero_grad(True)
 
         # Real images
         output_real = self.disc(real_imgs, labels)
@@ -38,12 +40,12 @@ class GANTrainer:
         output_fake = self.disc(fake_imgs.detach(), labels)
         loss_d_fake = self.criterion(output_fake, fake_label)
 
-        loss_d = loss_d_real + loss_d_fake
+        loss_d = (loss_d_real + loss_d_fake) / 2
         loss_d.backward()
         self.opt_d.step()
 
         # 2. Train Generator
-        self.opt_g.zero_grad()
+        self.opt_g.zero_grad(True)
 
         # We want the discriminator to think the fakes are real
         output_gen = self.disc(fake_imgs, labels)
@@ -53,6 +55,7 @@ class GANTrainer:
         self.opt_g.step()
 
         return loss_d.item(), loss_g.item(), output_real.mean().item(), output_fake.mean().item()
+        #return 0.0, 0.0, 0.5, 0.5
 
     def save_checkpoint(self, epoch, path="results/checkpoints"):
         os.makedirs(path, exist_ok=True)

@@ -1,0 +1,45 @@
+project_name: "GAN_Improved_MODEL"
+
+dataset:
+  name: "CIFAR10"
+  classes: ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
+data:
+  root: "./data"
+  download: True
+  num_workers: 4
+
+data_transform:
+  tin_mean: [0.5, 0.5, 0.5]
+  tin_std : [0.5, 0.5, 0.5]
+  aug_images : 10
+
+logger:
+  log_dir: "results/improved/logs"
+  tensorboard_dir: "results/improved/runs"
+  ckpt_dir: "results/improved/checkpoints"
+  use_tensorboard: true
+  save_every: 10
+  log_file: "training_improved.log"
+  level: "INFO"
+
+model:
+  latent_dim : 100
+  num_classes : 10
+  embedding_dim: 50
+  generator_channels : [512, 256, 128, 64]
+  discriminator_channels : [64, 128, 256, 512]
+  leaky_slope: 0.2
+
+trainer:
+  batch_size: 64
+  epochs : 10
+  lr_g: 0.0002
+  lr_d: 0.002
+  beta1: 0.5
+  beta2: 0.999
+
+device: "mps"
+use_pin: False # Turn this to true only when CUDA is Available.
+seed: 42
+
