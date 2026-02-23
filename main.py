@@ -90,9 +90,11 @@ def main():
         
         """
         # TODO
+        ** MAIN PREQUISITE: Explain the project in  Readme.md file. 
         1. Implement the model evaluation process. Tensor board is already set up, just need to provide results to it to visualize the model metrics.
         2. Visualization methods which are already inplace are not proper. Could implement better visualization of inputs at the data pipelines. 
         3. Also create the methods for visualizing the generated images. 
+        
         Add ons: 
         4. Implement the MLOPS pipelines
         5. Create Unit tests
