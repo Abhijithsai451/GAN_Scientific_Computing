@@ -87,8 +87,9 @@ def main():
         avg_d_gz = total_d_gz / num_batches
         print(f"==> Epoch [{epoch}] Summary | Loss D: {avg_loss_d:.4f} | Loss G: {avg_loss_g:.4f} | D(x): {avg_d_x:.4f} | G(x): {avg_d_gz:.4f} ")
         tb_logger.log_epoch(epoch, avg_loss_d, avg_loss_g, avg_d_x, avg_d_gz)
-        # TODO
+        
         """
+        # TODO
         1. Implement the model evaluation process. Tensor board is already set up, just need to provide results to it to visualize the model metrics.
         2. Visualization methods which are already inplace are not proper. Could implement better visualization of inputs at the data pipelines. 
         3. Also create the methods for visualizing the generated images. 
