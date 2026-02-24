@@ -100,6 +100,7 @@ def main():
         Add ons: 
         4. Implement the MLOPS pipelines
         5. Create Unit tests
+        6. I want to parallelize the model training in cluster. 
         """
     logger.info(f"Finished the Project: {config.project_name} ")
 if __name__ == "__main__":
