@@ -1,6 +1,7 @@
 # ML and Deep Learning
 torch>=2.11.0
 torchvision>=0.26.0
+scikit-learn==1.6.1
 numpy==1.26.4
 pandas==2.2.3
 
