@@ -1,6 +1,6 @@
-#ML and Deep Learning
-torch==2.10.0
-torchvision==0.25.0
+# ML and Deep Learning
+torch>=2.11.0
+torchvision>=0.26.0
 numpy==1.26.4
 pandas==2.2.3
 
@@ -13,5 +13,3 @@ tensorboard
 pyyaml==6.0.2
 tqdm==4.67.1
 pillow==11.1.0
-pandas
-
