@@ -17,7 +17,7 @@ class HyperParameterTuner:
         self.min_g_loss = float('inf')
 
     def run_experiment(self, params, name):
-        tuning_epochs = 1
+        tuning_epochs = 5
         temp_file_name = f"temp_tuner_{name}.yaml"
         temp_file_path = os.path.join(self.config_dir, temp_file_name)
         base_path = os.path.join(self.config_dir, 'improved_config.yaml')
