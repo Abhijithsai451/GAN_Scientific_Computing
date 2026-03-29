@@ -31,6 +31,7 @@ def get_dataloaders(config):
         root=config.data['root'],
         train=False,
         download=config.data['download'],
+        transform=get_test_transforms(tin_mean, tin_std)
     )
 
     indices = list(range(len(full_test_dataset)))
