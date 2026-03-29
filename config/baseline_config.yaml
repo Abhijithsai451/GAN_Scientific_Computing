@@ -33,7 +33,7 @@ model:
 
 trainer:
   batch_size: 64
-  epochs : 100
+  epochs : 1
   lr_g: 0.0002
   lr_d: 0.002
   beta1: 0.5

@@ -28,12 +28,15 @@ class TensorBoardLogger:
             self.writer.add_scalar('Loss/Discriminator', loss_d, epoch)
             self.writer.add_scalar('Loss/Generator', loss_g, epoch)
             self.writer.add_scalars('Probabilities', {"Real": d_x, "Fake": d_gz}, epoch)
+        self.save_to_csv()
 
-        def save_to_csv(self):
-            df = pd.DataFrame(self.history)
-            df.to_csv(self.csv_path, index=False)
+    def save_to_csv(self):
+        df = pd.DataFrame(self.history)
+        df.to_csv(self.csv_path, index=False)
 
-        def close(self):
-            if self.writer:
-                self.writer.close()
+    def close(self):
+        if self.writer:
+            self.writer.close()
+
+
 
