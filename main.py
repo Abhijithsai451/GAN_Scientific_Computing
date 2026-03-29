@@ -2,6 +2,7 @@ import os
 import torch
 from torchvision.utils import save_image
 from data_processing.dataloader import get_dataloaders
+from evaluation.evaluate import generate_plots
 from evaluation.visualize import visualize_batch
 from models.discriminator import Discriminator
 from models.generator import Generator
@@ -25,7 +26,7 @@ def main():
 
     DEVICE = config.device if torch.backends.mps.is_available() else "cpu"
 
-    logger.info(f"Starting the Project: {config.project_name} ")
+    logger.info(f"Starting the Project: {config.project_name} on {DEVICE} ")
     logger.info(f"Configuration Loaded from {config_path} ")
 
     train_loader, test_loader, valid_loader = get_dataloaders(config)
@@ -54,6 +55,7 @@ def main():
     trainer = GANTrainer(generator, discriminator, config,DEVICE)
     tb_logger  = TensorBoardLogger(config)
     os.makedirs("results/samples", exist_ok=True)
+    os.makedirs(config.logger['ckpt_dir'], exist_ok=True)
 
     # Creating Noise for the Generator
     fixed_noise = torch.randn(64, config.model['latent_dim']).to(DEVICE)
@@ -90,6 +92,13 @@ def main():
             fake_samples = generator(fixed_noise, fixed_labels)
             save_image(fake_samples, f"results/samples/epoch_{epoch}_{config.project_name}.png", normalize=True)
     tb_logger.close()
+
+    logger.info("Saving the generator's and disciminator's Checkpoints and state_dict")
+    torch.save(generator.state_dict(), os.path.join(config.logger['ckpt_dir'], "generator_final.pth"))
+    torch.save(discriminator.state_dict(), os.path.join(config.logger['ckpt_dir'], "discriminator_final.pth"))
+
+    logger.info("Plotting the Loss Graphs")
+    generate_plots("results","results/improved")
     logger.info(f"Finished the Project: {config.project_name} ")
 if __name__ == "__main__":
     main()
