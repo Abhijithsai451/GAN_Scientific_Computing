@@ -11,7 +11,7 @@ echo "----------------------------------------------------------------"
 # 1. Extract latest code from GitHub
 echo "Pulling latest code from GitHub..."
 if [ -d ".git" ]; then
-    git pull origin main
+    git pull origin master
 else
     echo "Git repository not found. Cloning..."
     git clone $REPO_URL .
