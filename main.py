@@ -76,8 +76,6 @@ def main():
             total_d_gz += d_gz
             if i % 100 == 0:
                 print(f"Epoch [{epoch}] Batch [{i}/{len(train_loader)}] | Loss D: {loss_d:.4f} | Loss G: {loss_g:.4f} ")
-
-
         # Metrics Logging
         num_batches = len(train_loader)
         logger.info(f"Number of Batches [{num_batches}]")
@@ -87,8 +85,11 @@ def main():
         avg_d_gz = total_d_gz / num_batches
         print(f"==> Epoch [{epoch}] Summary | Loss D: {avg_loss_d:.4f} | Loss G: {avg_loss_g:.4f} | D(x): {avg_d_x:.4f} | G(x): {avg_d_gz:.4f} ")
         tb_logger.log_epoch(epoch, avg_loss_d, avg_loss_g, avg_d_x, avg_d_gz)
-        # TODO
 
+        with torch.no_grad():
+            fake_samples = generator(fixed_noise, fixed_labels)
+            save_image(fake_samples, f"results/samples/epoch_{epoch}_{config.project_name}.png", normalize=True)
+    tb_logger.close()
     logger.info(f"Finished the Project: {config.project_name} ")
 if __name__ == "__main__":
     main()
