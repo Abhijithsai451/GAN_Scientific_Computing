@@ -39,7 +39,7 @@ trainer:
   beta1: 0.5
   beta2: 0.999
 
-device: "mps"
-use_pin: False # Turn this to true only when CUDA is Available.
+device: "cuda" # use "mps" if using apple silicon.
+use_pin: True # Turn this to true only when CUDA is Available.
 seed: 42
 

@@ -17,7 +17,9 @@ from utils.tensorboard_logger import TensorBoardLogger
 warnings.filterwarnings("ignore", message=".*pin_memory")
 
 def main():
+    #print(“Initializing the Project GAN_Scientific_Computing”)
     # Loading the Configuration file passed in Runtime.
+    
     config_path = get_args()
     config = Config(config_path)
 
@@ -87,7 +89,6 @@ def main():
         avg_d_gz = total_d_gz / num_batches
         print(f"==> Epoch [{epoch}] Summary | Loss D: {avg_loss_d:.4f} | Loss G: {avg_loss_g:.4f} | D(x): {avg_d_x:.4f} | G(x): {avg_d_gz:.4f} ")
         tb_logger.log_epoch(epoch, avg_loss_d, avg_loss_g, avg_d_x, avg_d_gz)
-
         with torch.no_grad():
             fake_samples = generator(fixed_noise, fixed_labels)
             save_image(fake_samples, f"results/samples/epoch_{epoch}_{config.project_name}.png", normalize=True)
