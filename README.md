@@ -58,178 +58,180 @@ All images are normalized to the range **[-1, 1]** to match the generator output
 ## Installation
 
 Install all required dependencies:
-
-```bash
+```
 pip install -r requirements.txt
-
-
+```
  How to Run
 
 Train Baseline Model
+```
 bash train_baseline_model.sh
-
+```
 Train Improved Model
+```
 bash train_improved_model.sh
-
+```
 Run Hyperparameter Tuning
+```
 bash run_tuner.sh
+```
+The scripts internally call `main.py` with the appropriate configuration files.
 
-The scripts internally call main.py with the appropriate configuration files.
-
-
+---
 
 
 ## Model Architecture
 
 
-Generator (G)
+**Generator (G)**
 
 The Generator is a conditional deep convolutional network.
 
-Input:
-Random noise vector (z)
-Class label embedding
+**Input:**
+- Random noise vector (z)
+- Class label embedding
 
-Architecture:
-Uses nn.Embedding for label conditioning
-Concatenates noise and label embedding
-Uses ConvTranspose2d layers for upsampling
-Feature map progression:
-1×1 → 4×4 → 8×8 → 16×16 → 32×32
+**Architecture:**
+- Uses `nn.Embedding` for label conditioning
+- Concatenates noise and label embedding
+- Uses **ConvTranspose2d** layers for upsampling
+- Feature map progression:
+   * 1×1 → 4×4 → 8×8 → 16×16 → 32×32
 
-Activation:
-ReLU (hidden layers)
-Tanh (output layer)
+**Activation:**
+- ReLU (hidden layers)
+- Tanh (output layer)
 
-Output:
-32×32 RGB image in range [-1, 1]
+**Output:**
+- 32×32 RGB image in range [-1, 1]
 
 
-Discriminator (D)
+**Discriminator (D)**
 
 The Discriminator is a conditional convolutional network.
 
-Input:
-Image (real or generated)
-Class label embedding
-Architecture:
-Uses Conv2d with stride=2 for downsampling
-Feature map progression:
-32×32 → 16×16 → 8×8 → 4×4
-Batch Normalization (except first layer)
-LeakyReLU activation
-Special Feature:
-Uses Global Average Pooling (GAP) instead of flattening
-Reduces parameters and improves generalization
-Output:
-Single scalar representing real/fake score
+**Input:**
+- Image (real or generated)
+- Class label embedding
+
+**Architecture:**
+- Uses **Conv2d with stride=2** for downsampling
+- Feature map progression:
+  * 32×32 → 16×16 → 8×8 → 4×4
+- Batch Normalization (except first layer)
+- LeakyReLU activation
+  
+**Special Feature:**
+- Uses **Global Average Pooling (GAP)** instead of flattening
+- Reduces parameters and improves generalization
+  
+**Output:**
+- Single scalar representing real/fake score
 
 
 
 
 ## Training Strategy
 
-The model follows a Conditional GAN training process:
+The model follows a **Conditional GAN training process**:
 
-Loss Function
-Binary Cross Entropy with Logits (BCEWithLogitsLoss)
+**Loss Function**
+- Binary Cross Entropy with Logits (`BCEWithLogitsLoss`)
 
-Optimizer
-Adam optimizer for both Generator and Discriminator
-β1 = 0.5, β2 = 0.999
+**Optimizer**
+- Adam optimizer for both Generator and Discriminator
+- β1 = 0.5, β2 = 0.999
 
-Training Steps
-Train Discriminator:
-Real images → label = 1
-Fake images → label = 0
-Train Generator:
-Fake images → label = 1 (to fool discriminator)
+**Training Steps**
+1. Train Discriminator:
+- Real images → label = 1
+- Fake images → label = 0
+2. Train Generator:
+- Fake images → label = 1 (to fool discriminator)
 
-Metrics Tracked
-Generator Loss
-Discriminator Loss
-D(x): output for real images
-D(G(z)): output for generated images
+**Metrics Tracked**
+- Generator Loss
+- Discriminator Loss
+- D(x): output for real images
+- D(G(z)): output for generated images
 
 
 ## Baseline Configuration
 
-Dataset
-CIFAR-10 (10 classes)
-Normalization: [-1, 1]
+**Dataset**
+- CIFAR-10 (10 classes)
+- Normalization: [-1, 1]
 
-Generator
-Latent dimension: 100
-Embedding dimension: 50
-Channels: [512, 256, 128, 64]
+**Generator**
+- Latent dimension: 100
+- Embedding dimension: 50
+- Channels: [512, 256, 128, 64]
 
-Discriminator
-Channels: [64, 128, 256, 512]
+**Discriminator**
+- Channels: [64, 128, 256, 512]
 
-Training
-Batch size: 64
-Epochs: 1
-Learning rate:
-Generator: 0.0002
-Discriminator: 0.002
+**Training**
+- Batch size: 64
+- Epochs: 1
+- Learning rate:
+  - Generator: 0.0002
+  - Discriminator: 0.002
 
-Reproducibility
-Random seed: 42
+**Reproducibility**
+- Random seed: 42
 
 
 ## Improved Model Configuration
 
 The improved model introduces several enhancements:
 
-Training Improvements
-Epochs increased to: 100
-Reduced learning rates:
-Generator: 1e-5
-Discriminator: 1e-5
+**Training Improvements**
+- Epochs increased to: **100**
+- Reduced learning rates:
+  * Generator: 1e-5
+  * Discriminator: 1e-5
 
-Architectural Changes
-Generator channels: [256, 128, 64]
-Discriminator channels: [64, 128, 256]
+**Architectural Changes**
+- Generator channels: [256, 128, 64]
+- Discriminator channels: [64, 128, 256]
 
-Benefits
-Improved training stability
-Reduced overfitting
-Better image quality
+**Benefits**
+- Improved training stability
+- Reduced overfitting
+- Better image quality
 
-Logging
-Separate directories:
-results/improved/logs
-results/improved/checkpoints
+**Logging**
+- Separate directories:
+  * `results/improved/logs`
+  * `results/improved/checkpoints`
 
 
 ## Results
-The model generates class-conditioned images
-Image quality improves across training epochs
-
-Generated samples are saved in:
-
+- The model generates class-conditioned images
+- Image quality improves across training epochs
+- Generated samples are saved in:
+```
 results/samples/
-
+```
 
 ## Evaluation
 
 Evaluation includes:
 
-Generated image grids
-Latent space interpolation
-Class-conditioned image generation
+- Generated image grids
+- Latent space interpolation
+- Class-conditioned image generation
 
 Loss plots are automatically generated after training.
 
 
-##Logging & Monitoring
+## Logging & Monitoring
 
-Training metrics are logged using TensorBoard
-
-Logs include:
-  Generator loss
-  Discriminator loss
-  Training progress per epoch
+- Training metrics are logged using **TensorBoard**
+- Logs include:
+  * Generator loss
+  * Discriminator loss
+  * Training progress per epoch
 
 
 
@@ -237,12 +239,12 @@ Logs include:
 
 The project ensures reproducibility by:
 
-Fixing random seeds (Python, NumPy, PyTorch)
-Controlling CUDA determinism
-Using configuration-driven experiments
+- Fixing random seeds (Python, NumPy, PyTorch)
+- Controlling CUDA determinism
+- Using configuration-driven experiments
 
 
 
-Authors
-Menuka Chhethri
-Navya Mariam Joseph
+## Authors
+- Menuka Chhethri
+- Navya Mariam Joseph
