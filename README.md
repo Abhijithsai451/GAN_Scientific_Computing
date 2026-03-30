@@ -61,17 +61,17 @@ Install all required dependencies:
 ```
 pip install -r requirements.txt
 ```
- How to Run
+ **How to Run**
 
-Train Baseline Model
+**Train Baseline Model**
 ```
 bash train_baseline_model.sh
 ```
-Train Improved Model
+**Train Improved Model**
 ```
 bash train_improved_model.sh
 ```
-Run Hyperparameter Tuning
+**Run Hyperparameter Tuning**
 ```
 bash run_tuner.sh
 ```
