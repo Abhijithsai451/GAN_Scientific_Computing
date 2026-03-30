@@ -13,6 +13,7 @@ The model generates realistic images conditioned on class labels. The project in
 
 ## Project Structure
 
+```
 GAN_Scientific_Computing/
 ├── config/
 ├── data_processing/
@@ -42,9 +43,7 @@ GAN_Scientific_Computing/
 ├── TODO.txt
 ├── requirements.txt
 └── README.md
-
----
-
+```
 ## Dataset
 
 This project uses the **CIFAR-10 dataset**:
