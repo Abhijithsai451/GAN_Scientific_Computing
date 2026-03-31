@@ -1,13 +1,17 @@
 # Conditional GAN (cGAN) - Scientific Computing Project
 
 ## Overview
+
 This project implements a Conditional Generative Adversarial Network (cGAN) using the CIFAR-10 dataset.
 
 The model generates realistic images conditioned on class labels. The project includes:
-- Baseline DCGAN implementation
-- Improved architecture
-- Hyperparameter tuning
-- Evaluation and visualization
+
+* Baseline DCGAN implementation
+* Improved architecture
+* Hyperparameter tuning
+* Evaluation and visualization
+
+The project was trained on an HPC cluster using PBS for efficient computation.
 
 ---
 
@@ -44,228 +48,229 @@ GAN_Scientific_Computing/
 ├── requirements.txt
 └── README.md
 ```
+
+---
+
 ## Dataset
 
-This project uses the **CIFAR-10 dataset**:
-- 60,000 images (50,000 training, 10,000 test)
-- Image size: 32 × 32 (RGB)
-- 10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
+This project uses the CIFAR-10 dataset:
 
-All images are normalized to the range **[-1, 1]** to match the generator output (Tanh activation).
+* 60,000 images (50,000 training, 10,000 test)
+* Image size: 32 × 32 (RGB)
+* 10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
+
+All images are normalized to the range [-1, 1] to match the generator output (Tanh activation).
 
 ---
 
 ## Installation
 
 Install all required dependencies:
+
 ```
 pip install -r requirements.txt
 ```
- **How to Run**
+
+---
+
+## How to Run (Local)
+
+Train baseline model:
+
+```
+bash train_baseline_model.sh
+```
+
+Train improved model:
+
+```
+bash train_improved_model.sh
+```
+
+Run hyperparameter tuning:
+
+```
+bash run_tuner.sh
+```
+
+---
+
 ## Running on Cluster (PBS)
 
 Submit training job:
 
-```bash
+```
 qsub pbs_baseline.pbs
-**Train Baseline Model**
 ```
-bash train_baseline_model.sh
+
+Check job status:
+
 ```
-**Train Improved Model**
+qstat -u $USER
 ```
-bash train_improved_model.sh
+
+Monitor logs:
+
 ```
-**Run Hyperparameter Tuning**
+tail -f results/logs/training.log
 ```
-bash run_tuner.sh
-```
-The scripts internally call `main.py` with the appropriate configuration files.
 
 ---
 
-
 ## Model Architecture
 
+### Generator (G)
 
-**Generator (G)**
+* Input: random noise vector (z) + class label embedding
+* Uses nn.Embedding for conditioning
+* Uses ConvTranspose2d for upsampling
 
-The Generator is a conditional deep convolutional network.
+Feature progression:
+1×1 → 4×4 → 8×8 → 16×16 → 32×32
 
-**Input:**
-- Random noise vector (z)
-- Class label embedding
+Activation:
 
-**Architecture:**
-- Uses `nn.Embedding` for label conditioning
-- Concatenates noise and label embedding
-- Uses **ConvTranspose2d** layers for upsampling
-- Feature map progression:
-   * 1×1 → 4×4 → 8×8 → 16×16 → 32×32
+* ReLU (hidden layers)
+* Tanh (output)
 
-**Activation:**
-- ReLU (hidden layers)
-- Tanh (output layer)
+Output:
 
-**Output:**
-- 32×32 RGB image in range [-1, 1]
+* 32×32 RGB image in [-1, 1]
 
+---
 
-**Discriminator (D)**
+### Discriminator (D)
 
-The Discriminator is a conditional convolutional network.
+* Input: image + class label embedding
+* Uses Conv2d (stride=2) for downsampling
 
-**Input:**
-- Image (real or generated)
-- Class label embedding
+Feature progression:
+32×32 → 16×16 → 8×8 → 4×4
 
-**Architecture:**
-- Uses **Conv2d with stride=2** for downsampling
-- Feature map progression:
-  * 32×32 → 16×16 → 8×8 → 4×4
-- Batch Normalization (except first layer)
-- LeakyReLU activation
-  
-**Special Feature:**
-- Uses **Global Average Pooling (GAP)** instead of flattening
-- Reduces parameters and improves generalization
-  
-**Output:**
-- Single scalar representing real/fake score
+Activation:
 
+* LeakyReLU
+* BatchNorm (except first layer)
 
+Special feature:
 
+* Global Average Pooling (GAP)
+
+Output:
+
+* Single scalar (real/fake score)
+
+---
 
 ## Training Strategy
 
-The model follows a **Conditional GAN training process**:
+Loss:
 
-**Loss Function**
-- Binary Cross Entropy with Logits (`BCEWithLogitsLoss`)
+* BCEWithLogitsLoss
 
-**Optimizer**
-- Adam optimizer for both Generator and Discriminator
-- β1 = 0.5, β2 = 0.999
+Optimizer:
 
-**Training Steps**
-1. Train Discriminator:
-- Real images → label = 1
-- Fake images → label = 0
-2. Train Generator:
-- Fake images → label = 1 (to fool discriminator)
+* Adam (beta1 = 0.5, beta2 = 0.999)
 
-**Metrics Tracked**
-- Generator Loss
-- Discriminator Loss
-- D(x): output for real images
-- D(G(z)): output for generated images
+Steps:
 
+1. Train Discriminator
+
+   * Real → 1
+   * Fake → 0
+
+2. Train Generator
+
+   * Fake → 1
+
+Metrics:
+
+* Generator Loss
+* Discriminator Loss
+* D(x), D(G(z))
+
+---
 
 ## Baseline Configuration
 
-**Dataset**
-- CIFAR-10 (10 classes)
-- Normalization: [-1, 1]
+* Latent dimension: 100
+* Batch size: 64
+* Epochs: 100
 
-**Generator**
-- Latent dimension: 100
-- Embedding dimension: 50
-- Channels: [512, 256, 128, 64]
+Learning rate:
 
-**Discriminator**
-- Channels: [64, 128, 256, 512]
+* Generator: 0.0002
+* Discriminator: 0.002
 
-**Training**
-- Batch size: 64
-- Epochs: 100
-- Learning rate:
-  - Generator: 0.0002
-  - Discriminator: 0.002
-
-**Reproducibility**
-- Random seed: 42
-
+---
 
 ## Improved Model Configuration
 
-The improved model introduces several enhancements:
+* Epochs: 100
+* Learning rate: 1e-5 (both networks)
 
-**Training Improvements**
-- Epochs: **100**
-- Reduced learning rates:
-  * Generator: 1e-5
-  * Discriminator: 1e-5
+Improvements:
 
-**Architectural Changes**
-- Generator channels: [256, 128, 64]
-- Discriminator channels: [64, 128, 256]
+* Better stability
+* Reduced overfitting
+* Improved image quality
 
-**Benefits**
-- Improved training stability
-- Reduced overfitting
-- Better image quality
-
-**Logging**
-- Separate directories:
-  * `results/improved/logs`
-  * `results/improved/checkpoints`
-
+---
 
 ## Results
-- The model generates class-conditioned images
-- Image quality improves across training epochs
-- Generated samples are saved in:
+
+* Images improve gradually over epochs
+* Generated samples stored in:
+
 ```
 results/samples/
 ```
-##  Generated Samples
 
-### Early Training (Epoch 0)
-![Epoch 0](results/samples/epoch_0.png)
-
-### Mid Training (Epoch 5)
-![Epoch 5](results/samples/epoch_5.png)
-
-### Final Output (Epoch 9)
-![Epoch 9](results/samples/epoch_9.png)
+---
 
 ## Challenges & Solutions
-- Training was slow due to large dataset (50,000 images) → Solved using dataset subset (5,000 samples)
-- Job termination due to walltime limits → Reduced epochs and optimized data loading
-- Data loading bottleneck → Increased `num_workers` for parallel loading
-- GAN instability → Adjusted learning rates and architecture
+
+* Large dataset slowed training
+  → Used subset (5,000 samples)
+
+* Job killed due to time limits
+  → Reduced epochs and optimized loading
+
+* Data loading bottleneck
+  → Increased num_workers
+
+* GAN instability
+  → Tuned learning rates and architecture
+
+---
 
 ## Evaluation
 
-Evaluation includes:
+* Generated image grids
+* Latent interpolation
+* Class-conditioned generation
 
-- Generated image grids
-- Latent space interpolation
-- Class-conditioned image generation
-
-Loss plots are automatically generated after training.
-
+---
 
 ## Logging & Monitoring
 
-- Training metrics are logged using **TensorBoard**
-- Logs include:
+* TensorBoard used for tracking:
+
   * Generator loss
   * Discriminator loss
-  * Training progress per epoch
+  * Training progress
 
-
+---
 
 ## Reproducibility
 
-The project ensures reproducibility by:
+* Fixed random seeds
+* Controlled determinism
+* Config-driven experiments
 
-- Fixing random seeds (Python, NumPy, PyTorch)
-- Controlling CUDA determinism
-- Using configuration-driven experiments
-
-
+---
 
 ## Authors
-- Menuka Chhetri
-- Navya Mariam Joseph
+
+* Menuka Chhetri
+* Navya Mariam Joseph
