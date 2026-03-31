@@ -5,11 +5,11 @@ REPO_URL="https://github.com/Abhijithsai451/GAN_Scientific_Computing.git"
 CONFIG_FILE="baseline_config.yaml"
 
 echo "----------------------------------------------------------------"
-echo "Starting Remote Cluster Execution: Baseline Model"
+echo "Starting Execution: Baseline Model Pipeline"
 echo "----------------------------------------------------------------"
 
-# 1. Extract latest code from GitHub
-echo "Pulling latest code from GitHub..."
+# 1. Pull latest code from GitHub
+echo "Checking for code updates from GitHub..."
 if [ -d ".git" ]; then
     git pull origin master
 else
@@ -18,18 +18,29 @@ else
 fi
 
 # 2. Install requirements
-echo "Installing dependencies from requirements.txt..."
+echo "Ensuring dependencies are installed..."
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 
-# 3. Create necessary directories
+# 3. Create necessary directories for Baseline
 echo "Ensuring directory structure exists..."
-mkdir -p data results/samples results/logs results/runs results/checkpoints
+mkdir -p data results/logs results/runs results/checkpoints
 
-# 4. Run the model
-echo "Executing Main Entry Point with $CONFIG_FILE..."
+# 4. Stage 1: Main Training
+echo "================================================================"
+echo "STAGE 1: Baseline Model Training"
+echo "================================================================"
+# Running the model using the baseline configuration
 python3 main.py --config $CONFIG_FILE
 
+# 5. Stage 2: Evaluation & Testing
+echo "================================================================"
+echo "STAGE 2: Evaluation & Testing"
+echo "================================================================"
+# Running the test script on the baseline checkpoints
+python3 test.py --config $CONFIG_FILE
+
 echo "----------------------------------------------------------------"
-echo "Execution Finished."
+echo "Execution Finished Successfully."
+echo "Check 'results/logs' for curves and 'results/test_results' for baseline grids."
 echo "----------------------------------------------------------------"
