@@ -73,50 +73,6 @@ pip install -r requirements.txt
 
 ---
 
-## How to Run (Local)
-
-Train baseline model:
-
-```
-bash train_baseline_model.sh
-```
-
-Train improved model:
-
-```
-bash train_improved_model.sh
-```
-
-Run hyperparameter tuning:
-
-```
-bash run_tuner.sh
-```
-
----
-
-## Running on Cluster (PBS)
-
-Submit training job:
-
-```
-qsub pbs_baseline.pbs
-```
-
-Check job status:
-
-```
-qstat -u $USER
-```
-
-Monitor logs:
-
-```
-tail -f results/logs/training.log
-```
-
----
-
 ## Model Architecture
 
 ### Generator (G)
@@ -216,6 +172,95 @@ Improvements:
 * Improved image quality
 
 ---
+## How to Run (Local)
+
+This project supports two types of execution:
+
+### 1. Baseline Model (No Hyperparameter Tuning)
+
+The baseline configuration uses predefined parameters and does not involve any hyperparameter tuning. It serves as a reference model for comparison.
+
+Run the baseline model using:
+
+```
+bash train_baseline_model.sh
+```
+
+This will:
+
+* Load `baseline_config.yaml`
+* Train the model with fixed hyperparameters
+* Save logs and generated samples in the results directory
+
+---
+
+### 2. Improved Model
+
+The improved model supports both:
+
+* Direct training using a predefined configuration
+* Hyperparameter tuning using grid search
+
+---
+
+#### (a) Run with Hyperparameter Tuning
+
+To perform hyperparameter tuning, use:
+
+```
+bash train_improved_model.sh --tune
+```
+
+This will:
+
+* Perform **grid search** over multiple hyperparameter combinations
+* Explore learning rates, latent dimensions, embedding sizes, and architectures
+* Evaluate each configuration based on training stability and output quality
+* Automatically select the best configuration
+* Save the optimal parameters into:
+
+```
+config/improved_config.yaml
+```
+
+This process ensures a systematic and reproducible tuning procedure.
+
+---
+
+#### (b) Run Improved Model (Without Tuning)
+
+If hyperparameter tuning has already been performed, you can directly train the improved model using:
+
+```
+bash train_improved_model.sh
+```
+
+This will:
+
+* Load the previously saved `improved_config.yaml`
+* Train the model using the optimized hyperparameters
+* Generate improved quality outputs compared to the baseline
+
+---
+
+### Notes
+
+* It is recommended to run hyperparameter tuning at least once before training the improved model.
+* The tuning process may take longer due to multiple experiment runs.
+* All training logs and outputs are saved in the `results/` directory.
+* TensorBoard can be used to monitor training progress and compare different runs.
+
+---
+
+### Optional: Hyperparameter Tuning Script
+
+Alternatively, tuning can also be triggered using:
+
+```
+bash run_tuner.sh
+```
+
+This script internally performs similar grid search operations for experimentation.
 
 ## Results
 
