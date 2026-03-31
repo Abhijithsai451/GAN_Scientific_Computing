@@ -149,29 +149,98 @@ Metrics:
 
 ## Baseline Configuration
 
+The baseline model uses a fixed set of hyperparameters without tuning. This configuration serves as a reference for evaluating improvements.
+
+**Model Parameters**
+
 * Latent dimension: 100
-* Batch size: 64
-* Epochs: 100
+* Embedding dimension: 50
+* Generator channels: [512, 256, 128, 64]
+* Discriminator channels: [64, 128, 256, 512]
 
-Learning rate:
+**Training Parameters**
 
-* Generator: 0.0002
-* Discriminator: 0.002
+* Generator learning rate: 0.0002
+* Discriminator learning rate: 0.0002
+* Optimizer: Adam
+* beta1: 0.5
+* beta2: 0.999
 
----
+This configuration provides stable training and establishes a baseline for comparison with the improved model.
 
 ## Improved Model Configuration
 
-* Epochs: 100
-* Learning rate: 1e-5 (both networks)
-
-Improvements:
-
-* Better stability
-* Reduced overfitting
-* Improved image quality
+The improved model incorporates a structured hyperparameter tuning process to enhance training stability and output quality compared to the baseline configuration.
 
 ---
+
+### Hyperparameter Tuning
+
+A systematic **grid search** was performed to explore different combinations of hyperparameters. The tuning process was designed to evaluate how architectural and training parameters affect GAN stability and performance.
+
+**Search Space**
+
+* Learning rates: [1e-5, 1e-4, 2e-4, 1e-3]
+* Latent dimensions: [100, 500, 1000, 1500]
+* Embedding dimensions: [50, 100, 150, 200]
+* Architectures:
+
+  * Shallow: Generator [256, 128, 64], Discriminator [64, 128, 256]
+  * Standard: Generator [512, 256, 128, 64], Discriminator [64, 128, 256, 512]
+  * Deep: Generator [1024, 512, 256, 128, 64], Discriminator [64, 128, 256, 512, 1024]
+
+**Methodology**
+
+* Grid search was used to systematically evaluate parameter combinations
+* Each configuration was trained and monitored using TensorBoard
+* Performance was compared based on:
+
+  * Stability of Generator and Discriminator loss curves
+  * Visual quality of generated images
+  * Convergence behavior during training
+
+Due to computational constraints, a reduced subset of configurations was evaluated initially, followed by refinement of promising configurations.
+
+---
+
+### Optimized Configuration (Selected)
+
+The following configuration was selected as the best performing setup based on stability and output quality:
+
+**Training Parameters**
+
+* Learning rate: 1e-05
+* beta1: 0.5
+* beta2: 0.999
+* LeakyReLU slope: 0.2
+
+**Model Parameters**
+
+* Latent dimension: 100
+* Embedding dimension: 50
+* Generator channels: [512, 256, 128, 64]
+* Discriminator channels: [64, 128, 256, 512]
+
+**Performance**
+
+* Final generator loss: 0.8945
+
+---
+
+### Key Observations
+
+* Lower learning rates (1e-5) significantly improved training stability
+* Higher learning rates led to oscillations and unstable adversarial dynamics
+* Deeper architectures improved representation capacity but increased training time
+* Larger latent dimensions increased diversity but reduced convergence stability
+
+---
+
+### Conclusion
+
+Hyperparameter tuning played a critical role in improving GAN performance. The selected configuration achieves a better balance between the Generator and Discriminator, resulting in more stable training and improved visual quality of generated samples.
+
+
 ## How to Run (Local)
 
 This project supports two types of execution:
