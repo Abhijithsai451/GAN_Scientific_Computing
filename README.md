@@ -67,11 +67,35 @@ All images are normalized to the range [-1, 1] to match the generator output (Ta
 
 Install all required dependencies:
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
----
+### Requirements
+
+Below are the main dependencies used in this project:
+
+#### ML and Deep Learning
+
+* torch >= 2.11.0
+* torchvision >= 0.26.0
+* scikit-learn == 1.6.1
+* numpy == 1.26.4
+* pandas == 2.2.3
+
+#### Visualization
+
+* matplotlib == 3.10.0
+* seaborn == 0.13.2
+* tensorboard
+
+#### Utilities
+
+* pyyaml == 6.0.2
+* tqdm == 4.67.1
+* pillow == 11.1.0
+
+These dependencies ensure reproducibility and compatibility with the training and evaluation pipeline.
 
 ## Model Architecture
 
