@@ -345,7 +345,7 @@ This will:
 
 ---
 
-### Optional: Hyperparameter Tuning Script
+### Alternative Approach: Hyperparameter Tuning Script
 
 Alternatively, tuning can also be triggered using:
 
@@ -357,7 +357,7 @@ This script internally performs similar grid search operations for experimentati
 
 ## Results
 
-* Images improve gradually over epochs
+* Images improved gradually over epochs
 * Generated samples stored in:
 
 ```
@@ -409,6 +409,5 @@ results/samples/
 ---
 
 ## Authors
-
 * Menuka Chhetri
 * Navya Mariam Joseph
