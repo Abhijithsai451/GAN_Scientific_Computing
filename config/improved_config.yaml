@@ -22,8 +22,8 @@ model:
   latent_dim: 100
   num_classes: 10
   embedding_dim: 50
-  generator_channels: [256, 128, 64]
-  discriminator_channels: [64, 128, 256]
+  generator_channels: [512, 256, 128, 64]
+  discriminator_channels: [64, 128, 256, 512]
   leaky_slope: 0.2
 trainer:
   batch_size: 64

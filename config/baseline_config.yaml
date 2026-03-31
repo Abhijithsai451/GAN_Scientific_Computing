@@ -12,7 +12,7 @@ data:
 data_transform:
   tin_mean: [0.5, 0.5, 0.5]
   tin_std : [0.5, 0.5, 0.5]
-  aug_images :
+  aug_images : 3
 
 logger:
   log_dir: "results/baseline/logs"
