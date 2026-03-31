@@ -62,7 +62,12 @@ Install all required dependencies:
 pip install -r requirements.txt
 ```
  **How to Run**
+## Running on Cluster (PBS)
 
+Submit training job:
+
+```bash
+qsub pbs_baseline.pbs
 **Train Baseline Model**
 ```
 bash train_baseline_model.sh
@@ -213,6 +218,22 @@ The improved model introduces several enhancements:
 ```
 results/samples/
 ```
+##  Generated Samples
+
+### Early Training (Epoch 0)
+![Epoch 0](results/samples/epoch_0.png)
+
+### Mid Training (Epoch 5)
+![Epoch 5](results/samples/epoch_5.png)
+
+### Final Output (Epoch 9)
+![Epoch 9](results/samples/epoch_9.png)
+
+## Challenges & Solutions
+- Training was slow due to large dataset (50,000 images) → Solved using dataset subset (5,000 samples)
+- Job termination due to walltime limits → Reduced epochs and optimized data loading
+- Data loading bottleneck → Increased `num_workers` for parallel loading
+- GAN instability → Adjusted learning rates and architecture
 
 ## Evaluation
 
@@ -246,5 +267,5 @@ The project ensures reproducibility by:
 
 
 ## Authors
-- Menuka Chhethri
+- Menuka Chhetri
 - Navya Mariam Joseph
