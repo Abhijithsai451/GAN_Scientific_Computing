@@ -12,12 +12,12 @@ data:
 data_transform:
   tin_mean: [0.5, 0.5, 0.5]
   tin_std : [0.5, 0.5, 0.5]
-  aug_images : 1
+  aug_images :
 
 logger:
-  log_dir: "results/logs"
-  tensorboard_dir: "results/runs"
-  ckpt_dir: "results/checkpoints"
+  log_dir: "results/baseline/logs"
+  tensorboard_dir: "results/baseline/runs"
+  ckpt_dir: "results/baseline/checkpoints"
   use_tensorboard: true
   save_every: 10
   log_file: "training.log"
