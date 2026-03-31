@@ -172,7 +172,7 @@ The model follows a **Conditional GAN training process**:
 
 **Training**
 - Batch size: 64
-- Epochs: 1
+- Epochs: 100
 - Learning rate:
   - Generator: 0.0002
   - Discriminator: 0.002
@@ -186,7 +186,7 @@ The model follows a **Conditional GAN training process**:
 The improved model introduces several enhancements:
 
 **Training Improvements**
-- Epochs increased to: **100**
+- Epochs: **100**
 - Reduced learning rates:
   * Generator: 1e-5
   * Discriminator: 1e-5
