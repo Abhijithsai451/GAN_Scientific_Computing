@@ -28,14 +28,14 @@ mkdir -p data results/logs results/runs results/checkpoints
 
 # 4. Stage 1: Main Training
 echo "================================================================"
-echo "STAGE 1: Baseline Model Training"
+echo "Baseline Model Training"
 echo "================================================================"
 # Running the model using the baseline configuration
 python3 main.py --config $CONFIG_FILE
 
 # 5. Stage 2: Evaluation & Testing
 echo "================================================================"
-echo "STAGE 2: Evaluation & Testing"
+echo "Evaluation & Testing"
 echo "================================================================"
 # Running the test script on the baseline checkpoints
 python3 test.py --config $CONFIG_FILE

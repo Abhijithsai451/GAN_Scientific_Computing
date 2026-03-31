@@ -44,7 +44,7 @@ mkdir -p data results/improved/logs results/improved/runs results/improved/check
 
 # 4. Run the model
 echo "================================================================"
-echo "STAGE 2: Final Training with Optimized Parameters"
+echo "Training with Optimized Parameters"
 echo "================================================================"
 python3 main.py --config $CONFIG_FILE
 
