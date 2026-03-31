@@ -122,7 +122,7 @@ tail -f results/logs/training.log
 ### Generator (G)
 
 * Input: random noise vector (z) + class label embedding
-* Uses nn.Embedding for conditioning
+* Uses nn.Embedding for label conditioning
 * Uses ConvTranspose2d for upsampling
 
 Feature progression:
