@@ -24,7 +24,7 @@ python3 -m pip install -r requirements.txt
 
 # 3. Create necessary directories for Baseline
 echo "Ensuring directory structure exists..."
-mkdir -p data results/logs results/runs results/checkpoints
+mkdir -p data results/baseline/logs results/baseline/runs results/baseline/checkpoints
 
 # 4. Stage 1: Main Training
 echo "================================================================"
