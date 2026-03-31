@@ -12,7 +12,7 @@ data:
 data_transform:
   tin_mean: [0.5, 0.5, 0.5]
   tin_std : [0.5, 0.5, 0.5]
-  aug_images : 5
+  aug_images : 1
 
 logger:
   log_dir: "results/logs"
@@ -35,7 +35,7 @@ trainer:
   batch_size: 64
   epochs : 80
   lr_g: 0.0002
-  lr_d: 0.002
+  lr_d: 0.0002
   beta1: 0.5
   beta2: 0.999
 
