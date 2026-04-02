@@ -19,3 +19,12 @@ class WandBConfig:
 
     def get_config(self):
         return wandb.config
+
+    def log_step(self,metrics, step = None):
+        wandb.log(metrics, step = step)
+
+    def log_images(self, images, title="Generated Samples", step = None):
+        wandb.log({title: [wandb.Image(img) for img in images]}, step=step)
+
+    def finish(self):
+        wandb.finish()

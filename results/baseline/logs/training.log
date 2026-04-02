@@ -105,3 +105,6 @@
 >>> Evaluating the Discriminator on the Real (Test Set) vs Fake Data...
 [2026-03-31 21:14:17] [GAN_Baseline_MODEL] [INFO] Accuracy on Real Test Images: 68.75%
 [2026-03-31 21:14:17] [GAN_Baseline_MODEL] [INFO] Accuracy on Generated Fake Images: 94.18%
+[2026-04-02 20:51:09] [GAN_Baseline_MODEL] [INFO] W&B Logic Integrated with system logger
+[2026-04-02 20:51:10] [GAN_Baseline_MODEL] [INFO] Starting the Project: GAN_Baseline_MODEL on mps 
+[2026-04-02 20:51:10] [GAN_Baseline_MODEL] [INFO] Configuration Loaded from config/baseline_config.yaml 
