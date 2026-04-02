@@ -1,5 +1,7 @@
 import logging
 import os
+import wandb
+
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 _project_name = "GAN_CIFAR10_MODEL"
@@ -30,8 +32,8 @@ def setup_logger(config):
             logging.StreamHandler()
         ]
     )
-
-    logger.info(f"Logger identity set to: {_project_name}")
+    if wandb.run is not None:
+        logger.info("W&B Logic Integrated with system logger")
     return logger
 
 def get_logger():
