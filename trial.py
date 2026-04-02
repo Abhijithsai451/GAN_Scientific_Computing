@@ -99,7 +99,14 @@ def main():
     logger.info("Plotting the Loss Graphs")
     generate_plots("results", "results/improved")
     logger.info(f"Finished the Project: {config.project_name} ")
-    wb_logger.close()
+
+    artifact = wb.Artifact(f"{config.project_name}_model", type="model")
+    artifact.add_file(os.path.join(config.logger['ckpt_dir'], "generator_final.pth"))
+    artifact.add_file(os.path.join(config.logger['ckpt_dir'], "discriminator_final.pth"))
+    wb.log_artifact(artifact)
+    logger.info("Model Artifacts logged to WandB Artifact Registry")
+
+    wb.finish()
 
 if __name__ == '__main__':
     main()
