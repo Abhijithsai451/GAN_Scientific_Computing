@@ -17,7 +17,6 @@ from utils.tensorboard_logger import TensorBoardLogger
 warnings.filterwarnings("ignore", message=".*pin_memory")
 
 def main():
-    #print(“Initializing the Project GAN_Scientific_Computing”)
     # Loading the Configuration file passed in Runtime.
     
     config_path = get_args()

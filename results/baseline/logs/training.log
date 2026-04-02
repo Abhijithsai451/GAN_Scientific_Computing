@@ -1,0 +1,107 @@
+[2026-03-31 18:51:06] [GAN_Baseline_MODEL] [INFO] Logger identity set to: GAN_Baseline_MODEL
+[2026-03-31 18:51:06] [GAN_Baseline_MODEL] [INFO] Testing the Project: GAN_Baseline_MODEL on mps 
+[2026-03-31 18:51:06] [GAN_Baseline_MODEL] [INFO] Configuration Loaded from config/baseline_config.yaml 
+[2026-03-31 18:51:06] [GAN_Baseline_MODEL] [INFO] Error: Checkpoints not found at results/baseline/checkpoints/generator_final.pth. Run training first.
+[2026-03-31 18:52:09] [GAN_Baseline_MODEL] [INFO] Logger identity set to: GAN_Baseline_MODEL
+[2026-03-31 18:52:09] [GAN_Baseline_MODEL] [INFO] Starting the Project: GAN_Baseline_MODEL on mps 
+[2026-03-31 18:52:09] [GAN_Baseline_MODEL] [INFO] Configuration Loaded from config/baseline_config.yaml 
+[2026-03-31 18:52:09] [GAN_CIFAR10_MODEL] [INFO] Loading CIFAR-10 dataset...
+[2026-03-31 18:52:11] [GAN_CIFAR10_MODEL] [INFO] Dataloaders ready. Training samples: 50000, Test samples: 5000
+[2026-03-31 18:52:11] [GAN_Baseline_MODEL] [INFO] Imported the dataset from CIFAR10 
+[2026-03-31 18:52:11] [GAN_Baseline_MODEL] [INFO] Building the GAN_Baseline_MODEL Architecture from the config file  
+[2026-03-31 18:52:11] [GAN_Baseline_MODEL] [INFO] Generator built successfully
+[2026-03-31 18:52:11] [GAN_Baseline_MODEL] [INFO] Discriminator built successfully
+[2026-03-31 18:52:11] [GAN_Baseline_MODEL] [INFO] Weights initialized on Generator and Discriminator
+[2026-03-31 18:52:11] [GAN_Baseline_MODEL] [INFO] Model Training Initialized......
+[2026-03-31 18:53:58] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 18:55:45] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 18:57:35] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 18:59:24] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:01:15] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:03:02] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:04:47] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:06:33] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:08:28] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:10:23] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:12:18] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:14:10] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:15:56] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:17:43] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:19:29] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:21:14] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:23:00] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:24:46] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:26:30] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:28:13] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:29:57] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:31:41] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:33:25] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:35:08] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:36:52] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:38:36] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:40:20] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:42:04] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:43:47] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:45:31] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:47:15] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:48:59] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:50:43] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:52:27] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:54:10] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:55:54] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:57:38] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 19:59:22] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:01:05] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:02:50] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:04:34] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:06:20] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:08:07] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:09:52] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:11:41] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:13:26] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:15:16] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:17:01] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:18:46] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:20:30] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:22:15] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:23:59] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:25:44] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:27:28] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:29:13] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:30:57] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:32:45] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:34:29] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:36:13] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:37:57] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:39:41] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:41:25] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:43:12] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:44:56] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:46:41] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:48:25] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:50:10] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:51:54] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:53:38] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:55:27] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:57:15] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 20:59:00] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:00:45] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:02:30] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:04:15] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:06:00] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:07:44] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:09:31] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:11:17] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:13:02] [GAN_Baseline_MODEL] [INFO] Number of Batches [782]
+[2026-03-31 21:13:02] [GAN_Baseline_MODEL] [INFO] Saving the generator's and disciminator's Checkpoints and state_dict
+[2026-03-31 21:13:02] [GAN_Baseline_MODEL] [INFO] Plotting the Loss Graphs
+[2026-03-31 21:13:02] [GAN_Baseline_MODEL] [INFO] Finished the Project: GAN_Baseline_MODEL 
+[2026-03-31 21:13:43] [GAN_Baseline_MODEL] [INFO] Logger identity set to: GAN_Baseline_MODEL
+[2026-03-31 21:13:43] [GAN_Baseline_MODEL] [INFO] Testing the Project: GAN_Baseline_MODEL on mps 
+[2026-03-31 21:13:43] [GAN_Baseline_MODEL] [INFO] Configuration Loaded from config/baseline_config.yaml 
+[2026-03-31 21:13:43] [GAN_CIFAR10_MODEL] [INFO] Loading CIFAR-10 dataset...
+[2026-03-31 21:13:45] [GAN_CIFAR10_MODEL] [INFO] Dataloaders ready. Training samples: 50000, Test samples: 5000
+[2026-03-31 21:13:45] [GAN_Baseline_MODEL] [INFO] 
+>>> Evaluating the Discriminator on the Real (Test Set) vs Fake Data...
+[2026-03-31 21:14:17] [GAN_Baseline_MODEL] [INFO] Accuracy on Real Test Images: 68.75%
+[2026-03-31 21:14:17] [GAN_Baseline_MODEL] [INFO] Accuracy on Generated Fake Images: 94.18%
