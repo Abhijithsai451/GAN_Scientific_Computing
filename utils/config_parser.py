@@ -25,9 +25,3 @@ def get_args():
     args = parser.parse_args()
     config_path = os.path.join('config', args.config)
     return config_path
-
-"""
-args = get_args()
-config_path = os.path.join('config', args.config)
-cfg = Config(config_path)
-"""
