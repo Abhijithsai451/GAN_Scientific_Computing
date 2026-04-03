@@ -1,8 +1,6 @@
 import os
-
 import torch
 from torchvision.utils import save_image
-
 from data_processing.dataloader import get_dataloaders
 from evaluation.evaluate import generate_plots
 from models.discriminator import Discriminator
@@ -10,10 +8,9 @@ from models.generator import Generator
 import wandb as wb
 from models.model_utils import weight_initialization
 from training.train import GANTrainer
-from utils.config_parser import Config, get_args
+from utils.config_parser import get_args
 from utils.logger_config import setup_logger
-from utils.tensorboard_logger import TensorBoardLogger
-from utils.wandb_config import WandBConfig
+from wandb_utils.wandb_config import WandBConfig
 
 def main():
     # Importing the config file from the command line

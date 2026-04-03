@@ -1,9 +1,7 @@
 import wandb
 import torch
 import os
-
 import yaml
-
 
 class WandBConfig:
     def __init__(self, config_file, job_type="train"):
