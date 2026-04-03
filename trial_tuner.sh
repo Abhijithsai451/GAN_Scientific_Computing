@@ -3,7 +3,6 @@
 # Configuration
 REPO_URL="https://github.com/Abhijithsai451/GAN_Scientific_Computing.git"
 CONFIG_FILE="improved_config.yaml"
-
 TUNE_MODEL=false
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -35,19 +34,19 @@ python3 -m pip install -r requirements.txt
 
 # 3. Create necessary directories
 mkdir -p data results/improved/logs results/improved/checkpoints
-
+TUNER_SCRIPT="wandb_utils/tuner.py"
 # 4. Run Execution
 if [ "$TUNE_MODEL" = true ]; then
     echo "================================================================"
-    echo "MLOps Pipeline: Automated Hyperparameter Tuning (W&B Sweep)"
+    echo "Automated Hyperparameter Tuning (W&B Sweep)"
     echo "================================================================"
     # We call the Tuner script instead of main.py
-    python3 utils/wandb_tuner.py --tune
+    python3 TUNER_SCRIPT
 else
     echo "================================================================"
-    echo "Standard Pipeline: Training with Preset Parameters"
+    echo "Training with Preset Parameters"
     echo "================================================================"
-    python3 main.py --config $CONFIG_FILE
+    python3 trial.py --config $CONFIG_FILE
 fi
 
 echo "----------------------------------------------------------------"

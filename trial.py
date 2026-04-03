@@ -12,6 +12,7 @@ from utils.config_parser import get_args
 from utils.logger_config import setup_logger
 from wandb_utils.wandb_config import WandBConfig
 
+
 def main():
     # Importing the config file from the command line
     config_path = get_args()

@@ -1,5 +1,4 @@
 import wandb
-import torch
 import os
 import yaml
 
@@ -8,11 +7,14 @@ class WandBConfig:
         with open(config_file,'r') as f:
             config_data = yaml.safe_load(f)
         self.config = config_data
-
+        is_sweep = "WANDB_SWEEP_ID" in os.environ
+        if not is_sweep:
+            project_name = self.config.get('project_name',"GAN_Scientific_Computing")
         self.run = wandb.init(
-            project=self.config['project_name'],
             config= self.config,
             job_type=job_type,
+            mode="offline",
+            settings=wandb.Settings(init_timeout=300)
         )
 
     def get_config(self):
