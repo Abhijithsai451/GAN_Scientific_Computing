@@ -26,7 +26,7 @@ class HyperParameterTuner:
 
         config['project_name'] = name
         config['trainer'].update({
-            'lr_g': params['lr'],
+            'lr_g': params['lr' ],
             'lr_d': params['lr'],
             'beta1': params['beta1'],
             'beta2': params['beta2'],
