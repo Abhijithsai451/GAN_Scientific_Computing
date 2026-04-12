@@ -120,3 +120,9 @@
 [2026-04-02 21:50:31] [GAN_Baseline_MODEL] [INFO] Models are now being 'watched' by WandB
 [2026-04-02 21:50:31] [GAN_Baseline_MODEL] [INFO] Weights initialized on Generator and Discriminator
 [2026-04-02 21:50:31] [GAN_Baseline_MODEL] [INFO] Model Training Initialized......
+[2026-04-11 10:17:09] [GAN_Baseline_MODEL] [INFO] W&B Logic Integrated with system logger
+[2026-04-11 10:17:09] [GAN_Baseline_MODEL] [INFO] Starting the Project: GAN_Baseline_MODEL on mps 
+[2026-04-11 10:17:09] [GAN_Baseline_MODEL] [INFO] Configuration Loaded from config/baseline_config.yaml 
+[2026-04-11 10:17:09] [GAN_Scientific_Computing] [INFO] Loading CIFAR-10 dataset...
+[2026-04-11 10:17:10] [GAN_Scientific_Computing] [INFO] Dataloaders ready. Training samples: 50000, Test samples: 5000
+[2026-04-11 10:17:10] [GAN_Baseline_MODEL] [INFO] Imported the dataset from CIFAR10 

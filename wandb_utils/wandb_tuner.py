@@ -1,4 +1,6 @@
 import os
+import uuid
+
 import yaml
 import subprocess
 import wandb
@@ -13,7 +15,6 @@ class HyperParameterTuner:
         self.arch_map = {
             "shallow": {"g": [256, 128, 64], "d": [64, 128, 256]},
             "standard": {"g": [512, 256, 128, 64], "d": [64, 128, 256, 512]},
-            "deep_1": {"g": [512, 256, 128, 128, 128, 64], "d": [64, 128, 128, 128, 256, 512]},
             "deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
         }
 
@@ -37,8 +38,8 @@ class HyperParameterTuner:
                 'beta2': 0.999
             }
 
-            # Use your existing experiment runner!
-            self.run_experiment(params, trial_name)
+        # Use your existing experiment runner!
+        self.run_experiment(params, trial_name)
 
     def run_experiment(self, params, name):
         """Your existing experiment runner (Minimal changes)"""
@@ -50,7 +51,7 @@ class HyperParameterTuner:
 
         # Update config with sweep params
         config['project_name'] = name
-        config['trainer'].update({'lr_g': params['lr'], 'lr_d': params['lr'], 'epochs': 5})
+        config['trainer'].update({'lr_g': params['lr'], 'lr_d': params['lr'], 'epochs': 2})
         config['model'].update({
             'latent_dim': params['latent_dim'],
             'embedding_dim': params['embedding_dim'],
@@ -64,7 +65,14 @@ class HyperParameterTuner:
 
             print(f"\n[MLOps Tuner] Running Trial: {name}")
             # Runs main.py exactly as your shell script does
-            subprocess.run(["python", "trial.py", "--config", temp_file_path], cwd=self.root)
+            env = os.environ.copy()
+            for key in list(env.keys()):
+                if key.startswith("WANDB_"):
+                    del env[key]
+            if "wandb_api_key" in env:
+                env["WANDB_API_KEY"] = env["wandb_api_key"]
+
+            subprocess.run(["python", "trial.py", "--config", temp_file_path], env=env)
         finally:
             if os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
