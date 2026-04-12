@@ -34,14 +34,14 @@ python3 -m pip install -r requirements.txt
 
 # 3. Create necessary directories
 mkdir -p data results/improved/logs results/improved/checkpoints
-TUNER_SCRIPT="wandb_utils/tuner.py"
+TUNER_SCRIPT="wandb_utils/wandb_tuner.py"
 # 4. Run Execution
 if [ "$TUNE_MODEL" = true ]; then
     echo "================================================================"
     echo "Automated Hyperparameter Tuning (W&B Sweep)"
     echo "================================================================"
     # We call the Tuner script instead of main.py
-    python3 TUNER_SCRIPT
+    python3 $TUNER_SCRIPT
 else
     echo "================================================================"
     echo "Training with Preset Parameters"

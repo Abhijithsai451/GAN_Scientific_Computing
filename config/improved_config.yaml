@@ -5,11 +5,11 @@ dataset:
 data:
   root: ./data
   download: true
-  num_workers: 4
+  num_workers: 8
 data_transform:
   tin_mean: [0.5, 0.5, 0.5]
   tin_std: [0.5, 0.5, 0.5]
-  aug_images: 2
+  aug_images: 1
 logger:
   log_dir: results/improved/logs
   tensorboard_dir: results/improved/runs
