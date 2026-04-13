@@ -22,7 +22,7 @@ class GANTrainer:
         self.static_real_label = torch.ones(config.trainer['batch_size'], 1).to(self.device)
         self.static_fake_label = torch.zeros(config.trainer['batch_size'], 1).to(self.device)
 
-    def train_step(self, real_imgs, labels):
+    def train_step_bkp(self, real_imgs, labels):
         batch_size = real_imgs.size(0)
 
         real_label = self.static_real_label[:batch_size]
@@ -56,6 +56,50 @@ class GANTrainer:
 
         return loss_d.item(), loss_g.item(), output_real.mean().item(), output_fake.mean().item()
         #return 0.0, 0.0, 0.5, 0.5
+
+    def train_step(self, real_imgs, labels):
+        batch_size = real_imgs.size(0)
+        real_label = self.static_real_label[:batch_size]
+        fake_label = self.static_fake_label[:batch_size]
+
+        # 1. Train Discriminator
+        with torch.autograd.profiler.record_function("Discriminator_Update"):
+            self.opt_d.zero_grad(set_to_none=True)
+            # Real images pass
+            with torch.autograd.profiler.record_function("D_Forward_Real"):
+                output_real = self.disc(real_imgs, labels)
+                loss_d_real = self.criterion(output_real, real_label)
+
+            # Fake images pass
+            with torch.autograd.profiler.record_function("D_Forward_Fake"):
+                noise = torch.randn(batch_size, self.config.model['latent_dim'], device=self.device)
+                fake_imgs = self.gen(noise, labels)
+                # We detach fake_imgs because we are only updating the Discriminator here
+                output_fake = self.disc(fake_imgs.detach(), labels)
+                loss_d_fake = self.criterion(output_fake, fake_label)
+
+            with torch.autograd.profiler.record_function("D_Backward_Step"):
+                loss_d = (loss_d_real + loss_d_fake) / 2
+                loss_d.backward()
+                self.opt_d.step()
+
+        # 2. Train Generator
+        with torch.autograd.profiler.record_function("Generator_Update"):
+            self.opt_g.zero_grad(set_to_none=True)
+
+            with torch.autograd.profiler.record_function("G_Forward_Backprop"):
+                output_gen = self.disc(fake_imgs, labels)
+                loss_g = self.criterion(output_gen, real_label)
+
+                loss_g.backward()
+                self.opt_g.step()
+
+        return (
+            loss_d.item(),
+            loss_g.item(),
+            output_real.mean().item(),
+            output_fake.mean().item()
+        )
 
     def save_checkpoint(self, epoch, path="results/checkpoints"):
         os.makedirs(path, exist_ok=True)

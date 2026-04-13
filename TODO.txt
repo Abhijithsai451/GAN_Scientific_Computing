@@ -1,99 +1,14 @@
-------------------------------------------------------------------------------------------------------------------------
-Phase 1: Project Setup & Environment
-------------------------------------------------------------------------------------------------------------------------
-* [Done] **Create the Directory Structure**: Manually create the folders and empty files as specified in the project
-    requirements (e.g., `config/`, `data/`, `models/`, `training/`, `evaluation/`).
-* [Done] **Set Up Virtual Environment**: Create a Python environment and a `requirements.txt` file to pin package versions.
-* [Done] **Implement Global Seed**: In a main script or utility file, create the `set_seed(seed=42)` function using `torch`
-    , `numpy`, and `random` to ensure results are identical every time the code runs .
-* [Done] **Disable CuDNN Benchmarking**: Ensure `torch.backends.cudnn.benchmark = False` and `deterministic = True` are
-    set inside your seed function to prevent hardware-level randomness .
+* Import Intel Image Dataset. Source: puneet6060/intel-image-classification
+"""
+import kagglehub
+path = kagglehub.download('puneet6060/intel-image-classification')
+print(path)
+"""
 
-------------------------------------------------------------------------------------------------------------------------
-Phase 2: Data Loading & Preprocessing
-------------------------------------------------------------------------------------------------------------------------
+* Change the architecture to accept 150 x 150 Images
 
-The goal is to prepare the **CIFAR-10** dataset (10 classes of images) for the models .
 
-* [Done] **Create the Data Loader**: Use `torchvision.datasets.CIFAR10` to download the training and test sets .
-* [Done] **Define Baseline Transforms**:
-* [Done] Use `transforms.ToTensor()` to convert images to tensors.
-* [Done] Use `transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))` to scale pixel values from  to the  range
-    required for Tanh activation.
-* [Done] **Implement Training-Only Augmentation**: Research and add transformations like `RandomHorizontalFlip` or
-    `ColorJitter` to the training pipeline to help the discriminator generalize .
-* [Done] **Validate Test Set Transforms**: Ensure the test/validation sets **only** use `ToTensor` and `Normalize`, never
-    augmentation.
-* [Done] **Implement the function to directly visualize the images.** Using `tensor_to_images` pytorch function and dataloader.
-        Use the function `evaluation.visualize.visualize_images()`
 
-------------------------------------------------------------------------------------------------------------------------
-Phase 3: Baseline Architecture Implementation [Done]
-------------------------------------------------------------------------------------------------------------------------
-Implement a conditional DCGAN (Deep Convolutional GAN).
-### The Generator (Upsampling)
-* [Done] **Conditioning**: Use `torch.nn.Embedding` to turn class labels into vectors.
-* [Done] **Input Layer**: Concatenate the latent vector (size 100) with the class embedding.
-* [Done] **Architecture Steps**:
-* [Done] Apply **Batch Normalization** and **ReLU** after each layer (except the output).
-* [Done] Use **Tanh** for the final output layer to match the image range.
 
-### The Discriminator (Downsampling)
-* [Done] **Architecture Steps**:
-* [Done] Use **Leaky ReLU** (slope 0.2) as the activation function.
-* [Done] Apply **Batch Normalization** starting from the second layer.
-* [Done] **Output Layer**: Flatten the final feature map and project it to a single scalar (the real/fake probability).
 
-* [Done] **Implement YAML Configuration**: Create a `configs/` directory with `base_config.yaml` to handle:
-    * Hyperparameters (learning rate, beta1, beta2, batch size).
-    * Model architecture specs (latent_dim, feature_maps, num_classes).
-    * Dataset paths and augmentation toggles.
-* [Done] **Develop Config Loader**: Create `utils/config_manager.py` (implemented as `config_parser.py`) to parse YAML files and provide a unified configuration
-    object to the trainer and models.
-* [Done] **Modularize Model Definitions**:
-    * Refactor `models/generator.py` and `models/discriminator.py` to be dynamically built based on config parameters.
-------------------------------------------------------------------------------------------------------------------------
-## Phase 4: Training & Evaluation Logic [In Progress]
-------------------------------------------------------------------------------------------------------------------------
-* [Done] **Loss & Optimizer**: Use `BCELoss` (Binary Cross-Entropy) / `BCEWithLogitsLoss` and the `Adam` optimizer.
-* [Done] **Training Loop**:
-* [Done] Train the Discriminator and Generator in a **1:1 ratio** for the baseline.
-* [Done] Set initial learning rates to `2e-4` for both.
-* [Done] **Visualization Scripts**:
-    * [Done] Write a script to generate a grid of images for specific classes (implemented in `evaluation/visualize.py`).
-    * [Done] Implement **Latent Space Interpolation**: Create a smooth transition between two noise vectors to check if the
-        model is learning a meaningful space.
-    * [Done] Implement **Class Variation**: Fix the noise but change the class label to see how the "base structure" adapts.
-* [Done] **Model Scripting/Tracing**: Implement a script to export the trained Generator to **TorchScript** (`.pt`) for
-    faster inference without a Python dependency.
-* [ ] **Weight Quantization**: Experiment with `torch.quantization.quantize_dynamic` to reduce the Generator's memory
-    footprint and speed up CPU inference for real-time use.
-* [Done] **Automated Logging**: Integrate **TensorBoard** or **MLflow** to track real-time training metrics, losses, and
-    generated sample grids automatically.
-* [Done] **Checkpointing System**: Build a robust `utils/checkpoints.py` (implemented in `GANTrainer`) that saves the latest model, optimizer states,
-    and the config used for that specific run.
-------------------------------------------------------------------------------------------------------------------------
-## Phase 5: Architecture Improvement & Tuning
-------------------------------------------------------------------------------------------------------------------------
-* [ ] **Experiment with Advanced Layers**: Try adding **Residual Connections**, **Attention mechanisms**, or **Spectral
-    Normalization** to stabilize training.
-* [ ] **Test Alternative Losses**: Implement **WGAN-GP** or **LSGAN** to see if they reduce mode collapse compared to
-    vanilla GAN loss.
-* [ ] **Structured Hyperparameter Tuning**:
-* [ ] Vary learning rates (e.g.,  to ) methodically.
-* [ ] Experiment with training ratios (e.g., training the discriminator 2 or 3 times for every 1 generator update).
-* [ ] Document every change and its effect on visual quality and loss curves.
-* [ ] **Inference API**: Create a `deployment/app.py` using **FastAPI** or **Flask** to serve the Generator as a REST API.
-    * Endpoint `POST /generate`: Takes a class label and returns a generated image.
-* [ ] **Batch Inference**: Optimize the API to handle multiple generation requests simultaneously using PyTorch's batch
-    processing.
-* [ ] **Frontend Demo (Optional)**: Build a simple web interface (using Streamlit or HTML/JS) where users can select a
-    CIFAR-10 class and see the generated image in real-time.
 
-------------------------------------------------------------------------------------------------------------------------
-## Phase 6: Final Submission & Presentation
-------------------------------------------------------------------------------------------------------------------------
-* [ ] **Finalize README.md**: Include clear setup instructions and hardware requirements.
-* [ ] **Prepare Presentation**: Structure a 30-35 minute talk covering GAN theory, your architecture changes, and
-    side-by-side visual comparisons of results.
-* [ ] **Email Submission**: Request an upload link from the course leader and include all group member names.

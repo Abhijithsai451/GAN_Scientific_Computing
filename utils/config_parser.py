@@ -1,21 +1,54 @@
+import wandb
 import yaml
 import argparse
 import os
-
+ARCHITECTURE_MAP = {
+    "shallow": {"g": [256, 128, 64], "d": [64, 128, 256]},
+    "standard": {"g": [512, 256, 128, 64], "d": [64, 128, 256, 512]},
+    "deep_1": {"g": [512, 256, 128, 128, 128, 64], "d": [64, 128, 128, 128, 256, 512]},
+    "deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
+}
 class Config:
     """This is a Global class which holds the configuration parameters"""
-    _instance = None
+    def __init__(self, config_path):
+        with open(config_path,'r') as f:
+            self.config = yaml.safe_load(f)
+        self.project_name = self.config.get('project_name','GAN_Scientific_Computing')
+        self.device = self.config.get('device','cpu')
+        self.dataset = self._config.get('dataset', {})
+        self.model = self._config.get('model', {})
+        self.trainer = self._config.get('trainer', {})
+        self.logger = self._config.get('logger', {})
 
-    def __new__(cls, config_path = None):
-        if cls._instance is None:
-            if config_path is None:
-                raise ValueError("Config path must be provided the first time")
-            cls._instance = super(Config, cls).__new__(cls)
-            with open(config_path, 'r') as f:
-                content = yaml.safe_load(f)
-                cls._instance.__dict__.update(content)
+        # Overriding the params for wandb
+        if os.environ.get("WANDB_SWEEP_ACTIVE") == "True" and wandb.run is not None:
+            sweep_config = wandb.config
 
-        return cls._instance
+            if hasattr(sweep_config,'lr'):
+                self.trainer['lr_g'] = sweep_config.lr
+                self.trainer['lr_d'] = sweep_config.lr
+
+                # Override Latent and Embedding Dimensions
+            if hasattr(sweep_config, 'latent_dim'):
+                self.model['latent_dim'] = sweep_config.latent_dim
+            if hasattr(sweep_config, 'embedding_dim'):
+                self.model['embedding_dim'] = sweep_config.embedding_dim
+
+                # Override Batch size and Epochs
+            if hasattr(sweep_config, 'batch_size'):
+                self.trainer['batch_size'] = sweep_config.batch_size
+            if hasattr(sweep_config, 'epochs'):
+                self.trainer['epochs'] = sweep_config.epochs
+
+                # Handle Architecture Override
+                # We look for 'architecture' in the sweep and map it to g_channels/d_channels
+            if hasattr(sweep_config, 'architecture') and sweep_config.architecture in ARCHITECTURE_MAP:
+                arch = ARCHITECTURE_MAP[sweep_config.architecture]
+                self.model['g_channels'] = arch['g']
+                self.model['d_channels'] = arch['d']
+
+    def __repr__(self):
+        return str(self._config)
 
 def get_args():
     """Reads the config file name from the terminal command"""
@@ -25,9 +58,3 @@ def get_args():
     args = parser.parse_args()
     config_path = os.path.join('config', args.config)
     return config_path
-
-"""
-args = get_args()
-config_path = os.path.join('config', args.config)
-cfg = Config(config_path)
-"""

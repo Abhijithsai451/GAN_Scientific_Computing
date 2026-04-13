@@ -17,7 +17,6 @@ from utils.tensorboard_logger import TensorBoardLogger
 warnings.filterwarnings("ignore", message=".*pin_memory")
 
 def main():
-    #print(“Initializing the Project GAN_Scientific_Computing”)
     # Loading the Configuration file passed in Runtime.
     
     config_path = get_args()
@@ -92,7 +91,7 @@ def main():
         with torch.no_grad():
             fake_samples = generator(fixed_noise, fixed_labels)
             save_image(fake_samples, f"results/samples/epoch_{epoch}_{config.project_name}.png", normalize=True)
-    tb_logger.close()
+
 
     logger.info("Saving the generator's and disciminator's Checkpoints and state_dict")
     torch.save(generator.state_dict(), os.path.join(config.logger['ckpt_dir'], "generator_final.pth"))
@@ -101,5 +100,6 @@ def main():
     logger.info("Plotting the Loss Graphs")
     generate_plots("results","results/improved")
     logger.info(f"Finished the Project: {config.project_name} ")
+    tb_logger.close()
 if __name__ == "__main__":
     main()
