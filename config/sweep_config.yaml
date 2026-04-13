@@ -11,7 +11,7 @@ parameters:
   embedding_dim:
     values: [50, 100, 150, 200]
   architecture:
-    values: [shallow, standard, deep_1, deep]
+    values: [shallow, standard, deep]
   batch_size:
     values: [32, 64, 128, 256]
   epochs:
