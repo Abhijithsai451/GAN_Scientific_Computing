@@ -14,8 +14,8 @@ class HyperParameterTuner:
         self.config_dir = os.path.join(self.root, "config")
         self.arch_map = {
             "shallow": {"g": [256, 128, 64], "d": [64, 128, 256]},
-            #"standard": {"g": [512, 256, 128, 64], "d": [64, 128, 256, 512]},
-            #"deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
+            "standard": {"g": [512, 256, 128, 64], "d": [64, 128, 256, 512]},
+            "deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
         }
         self.results = []
         self.best_config = None

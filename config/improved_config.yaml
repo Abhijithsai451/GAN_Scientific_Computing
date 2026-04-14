@@ -27,7 +27,7 @@ model:
   leaky_slope: 0.2
 trainer:
   batch_size: 64
-  epochs: 1
+  epochs: 100
   lr_g: 0.001
   lr_d: 0.001
   beta1: 0.5
