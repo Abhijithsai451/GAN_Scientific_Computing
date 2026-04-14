@@ -43,12 +43,22 @@ if [ "$TUNE_MODEL" = true ]; then
     # We call the Tuner script instead of main.py
     python3 $TUNER_SCRIPT
 else
-    echo "================================================================"
-    echo "Training with Preset Parameters"
-    echo "================================================================"
-    python3 trial.py --config $CONFIG_FILE
+  echo ">>> Skipping Hyperparameter Tuning. Using existing $CONFIG_FILE."
 fi
+
+# 4. Run the model
+echo "================================================================"
+echo "Training with Optimized Parameters"
+echo "================================================================"
+python3 main.py --config $CONFIG_FILE
+
+echo "================================================================"
+echo "Evaluation & Testing"
+echo "================================================================"
+# Run the test script on the final checkpoints
+python3 test.py --config $CONFIG_FILE
 
 echo "----------------------------------------------------------------"
 echo "Execution Finished."
+echo "Check 'results/improved/logs' for curves and 'results/test_results' for grids."
 echo "----------------------------------------------------------------"
