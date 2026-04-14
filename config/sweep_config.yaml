@@ -5,19 +5,14 @@ metric:
   goal: minimize
 parameters:
   lr:
-    #values: [0.00001, 0.0001, 0.0002, 0.001]
-    values: [0.001]
+    values: [0.00001, 0.0001, 0.0002, 0.001]
   latent_dim:
-    #values: [100, 500, 1000, 1500]
-    values: [100]
+    values: [100, 500, 1000, 1500]
   embedding_dim:
-    #values: [50, 100, 150, 200]
-    values: [50]
+    values: [50, 100, 150, 200]
   architecture:
-    #values: [shallow, standard, deep]
-    values: [shallow]
+    values: [shallow, standard, deep]
   batch_size:
-    #values: [32, 64, 128, 256]
-    values: [32]
+    values: [32, 64, 128, 256]
   epochs:
-    value: 1
+    value: 3
