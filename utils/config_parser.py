@@ -5,21 +5,22 @@ import os
 ARCHITECTURE_MAP = {
     "shallow": {"g": [256, 128, 64], "d": [64, 128, 256]},
     "standard": {"g": [512, 256, 128, 64], "d": [64, 128, 256, 512]},
-    "deep_1": {"g": [512, 256, 128, 128, 128, 64], "d": [64, 128, 128, 128, 256, 512]},
     "deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
 }
 class Config:
-    """This is a Global class which holds the configuration parameters"""
+    """This is a Global class holds the configuration parameters"""
     def __init__(self, config_path):
         with open(config_path,'r') as f:
             self.config = yaml.safe_load(f)
         self.project_name = self.config.get('project_name','GAN_Scientific_Computing')
         self.device = self.config.get('device','cpu')
-        self.dataset = self._config.get('dataset', {})
-        self.model = self._config.get('model', {})
-        self.trainer = self._config.get('trainer', {})
-        self.logger = self._config.get('logger', {})
-
+        self.dataset = self.config.get('dataset', {})
+        self.model = self.config.get('model', {})
+        self.trainer = self.config.get('trainer', {})
+        self.logger = self.config.get('logger', {})
+        self.data_transform = self.config.get('data_transform', {})
+        self.use_pin = self.config.get('use_pin', False)
+        self.data = self.config.get('data', {})
         # Overriding the params for wandb
         if os.environ.get("WANDB_SWEEP_ACTIVE") == "True" and wandb.run is not None:
             sweep_config = wandb.config
@@ -48,7 +49,7 @@ class Config:
                 self.model['d_channels'] = arch['d']
 
     def __repr__(self):
-        return str(self._config)
+        return str(self.config)
 
 def get_args():
     """Reads the config file name from the terminal command"""

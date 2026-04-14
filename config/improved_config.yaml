@@ -22,14 +22,14 @@ model:
   latent_dim: 100
   num_classes: 10
   embedding_dim: 50
-  generator_channels: [512, 256, 128, 64]
-  discriminator_channels: [64, 128, 256, 512]
+  generator_channels: [256, 128, 64]
+  discriminator_channels: [64, 128, 256]
   leaky_slope: 0.2
 trainer:
   batch_size: 64
-  epochs: 70
-  lr_g: 1.0e-05
-  lr_d: 1.0e-05
+  epochs: 100
+  lr_g: 0.001
+  lr_d: 0.001
   beta1: 0.5
   beta2: 0.999
 device: mps

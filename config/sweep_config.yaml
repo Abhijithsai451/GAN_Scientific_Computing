@@ -1,5 +1,5 @@
 name: "GAN Hyperparameter Tuning"
-method: bayes
+method: grid
 metric:
   name: train/loss_g
   goal: minimize
@@ -15,4 +15,4 @@ parameters:
   batch_size:
     values: [32, 64, 128, 256]
   epochs:
-    value: 2
+    value: 3

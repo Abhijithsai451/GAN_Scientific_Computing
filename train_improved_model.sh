@@ -18,7 +18,7 @@ echo "----------------------------------------------------------------"
 
 echo "Pulling latest code from GitHub..."
 if [ -d ".git" ]; then
-    git pull origin master
+    git pull origin Protected
 else
     echo "Git repository not found. Cloning..."
     git clone $REPO_URL .

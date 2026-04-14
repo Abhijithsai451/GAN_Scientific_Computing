@@ -17,6 +17,8 @@ class HyperParameterTuner:
             "standard": {"g": [512, 256, 128, 64], "d": [64, 128, 256, 512]},
             "deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
         }
+        self.results = []
+        self.best_config = None
 
     def sweep_worker(self):
         with wandb.init() as run:
@@ -40,6 +42,10 @@ class HyperParameterTuner:
 
         # Use your existing experiment runner!
         self.run_experiment(params, trial_name)
+
+        result_entry = {**params, 'final_g_loss': 0.0}
+        self.results.append(result_entry)
+        self.best_config = params
 
     def run_experiment(self, params, name):
         """Your existing experiment runner (Minimal changes)"""
@@ -77,17 +83,57 @@ class HyperParameterTuner:
             if os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
 
-    def run_wandb_sweep(self, sweep_config_path, count=10):
+    def run_wandb_sweep(self, sweep_config_path,):
         """Initializes and starts the W&B Sweep"""
         with open(sweep_config_path, 'r') as f:
             sweep_config = yaml.safe_load(f)
 
         sweep_id = wandb.sweep(sweep_config, project="GAN_Scientific_Computing")
-        # This starts the agent which calls sweep_worker multiple times
-        wandb.agent(sweep_id, function=self.sweep_worker, count=count)
+        wandb.agent(sweep_id, function=self.sweep_worker)
 
+    def save_best_config(self, target_config_name="improved_config.yaml"):
+        if not self.best_config:
+            print("No best configuration found to save.")
+            return
 
+        target_path = os.path.join(self.config_dir, target_config_name)
+
+        with open(target_path, 'r') as f:
+            config = yaml.safe_load(f)
+
+        # Update with best parameters
+        print(f"\n>>> Overwriting {target_config_name} with best parameters...")
+        config['trainer']['lr_g'] = self.best_config['lr']
+        config['trainer']['lr_d'] = self.best_config['lr']
+        config['model']['latent_dim'] = self.best_config['latent_dim']
+        config['model']['embedding_dim'] = self.best_config['embedding_dim']
+        config['model']['generator_channels'] = self.best_config['g_channels']
+        config['model']['discriminator_channels'] = self.best_config['d_channels']
+
+        class CleanDumper(yaml.SafeDumper):
+            def represent_data(self, data):
+                if isinstance(data, list):
+                    return self.represent_sequence('tag:yaml.org,2002:seq', data, flow_style=True)
+                return super().represent_data(data)
+
+        with open(target_path, 'w') as f:
+            yaml.dump(config, f, Dumper=CleanDumper, sort_keys=False, default_flow_style=False)
+        print(f">>> {target_config_name} updated successfully.")
+    def print_summary(self):
+        print("\n" + "=" * 50)
+        print("TUNING SUMMARY")
+        print("=" * 50)
+        for i, res in enumerate(self.results):
+            print(
+                f"Trial {i}: G_Loss: {res.get('final_g_loss', 'N/A'):.4f} | LR: {res['lr']} | Slope: {res['leaky_slope']}")
+
+        if self.best_config:
+            print("\n>>> BEST CONFIGURATION FOUND:")
+            print(self.best_config)
+        print("=" * 50)
 if __name__ == "__main__":
     tuner = HyperParameterTuner()
     # Replace manual grid search with the MLOps sweep
-    tuner.run_wandb_sweep("config/sweep_config.yaml", count=10)
+    tuner.run_wandb_sweep("config/sweep_config.yaml")
+    tuner.print_summary()
+    tuner.save_best_config()
