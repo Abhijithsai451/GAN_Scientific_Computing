@@ -15,11 +15,13 @@ class Config:
             self.config = yaml.safe_load(f)
         self.project_name = self.config.get('project_name','GAN_Scientific_Computing')
         self.device = self.config.get('device','cpu')
-        self.dataset = self._config.get('dataset', {})
-        self.model = self._config.get('model', {})
-        self.trainer = self._config.get('trainer', {})
-        self.logger = self._config.get('logger', {})
-
+        self.dataset = self.config.get('dataset', {})
+        self.model = self.config.get('model', {})
+        self.trainer = self.config.get('trainer', {})
+        self.logger = self.config.get('logger', {})
+        self.data_transform = self.config.get('data_transform', {})
+        self.use_pin = self.config.get('use_pin', False)
+        self.data = self.config.get('data', {})
         # Overriding the params for wandb
         if os.environ.get("WANDB_SWEEP_ACTIVE") == "True" and wandb.run is not None:
             sweep_config = wandb.config
