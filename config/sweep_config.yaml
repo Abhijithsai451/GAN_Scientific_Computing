@@ -1,18 +1,23 @@
 name: "GAN Hyperparameter Tuning"
-method: bayes
+method: grid
 metric:
   name: train/loss_g
   goal: minimize
 parameters:
   lr:
-    values: [0.00001, 0.0001, 0.0002, 0.001]
+    #values: [0.00001, 0.0001, 0.0002, 0.001]
+    values: [0.001]
   latent_dim:
-    values: [100, 500, 1000, 1500]
+    #values: [100, 500, 1000, 1500]
+    values: [100]
   embedding_dim:
-    values: [50, 100, 150, 200]
+    #values: [50, 100, 150, 200]
+    values: [50]
   architecture:
-    values: [shallow, standard, deep_1, deep]
+    #values: [shallow, standard, deep]
+    values: [shallow]
   batch_size:
-    values: [32, 64, 128, 256]
+    #values: [32, 64, 128, 256]
+    values: [32]
   epochs:
-    value: 2
+    value: 1

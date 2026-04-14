@@ -17,3 +17,4 @@ pillow==11.1.0
 
 # CICD and MLOPS
 wandb
+nvtx

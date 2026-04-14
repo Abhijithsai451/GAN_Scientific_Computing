@@ -9,7 +9,7 @@ ARCHITECTURE_MAP = {
     "deep": {"g": [1024, 512, 256, 128, 64], "d": [64, 128, 256, 512, 1024]}
 }
 class Config:
-    """This is a Global class which holds the configuration parameters"""
+    """This is a Global class holds the configuration parameters"""
     def __init__(self, config_path):
         with open(config_path,'r') as f:
             self.config = yaml.safe_load(f)
@@ -48,7 +48,7 @@ class Config:
                 self.model['d_channels'] = arch['d']
 
     def __repr__(self):
-        return str(self._config)
+        return str(self.config)
 
 def get_args():
     """Reads the config file name from the terminal command"""
