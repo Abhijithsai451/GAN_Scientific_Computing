@@ -11,11 +11,13 @@ while [[ "$#" -gt 0 ]]; do
     esac
     shift
 done
+
 echo "----------------------------------------------------------------"
 echo "Starting Execution: Improved Model"
 echo "Enable HyperParameter Tuning: $TUNE_MODEL"
 echo "----------------------------------------------------------------"
 
+<< :
 echo "Pulling latest code from GitHub..."
 if [ -d ".git" ]; then
     git pull origin Protected
@@ -23,25 +25,26 @@ else
     echo "Git repository not found. Cloning..."
     git clone $REPO_URL .
 fi
+:
 
 # 2. Install requirements
-echo "Installing dependencies from requirements.txt..."
+echo "Installing dependencies..."
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
-TUNER_SCRIPT="wandb_utils/wandb_tuner.py"
 
-if [ "$DO_TUNE" = true ]; then
-  echo "================================================================"
-  echo "Hyperparameter Tuning (Grid Search)"
-  echo "================================================================"
-  python3 $TUNER_SCRIPT
+# 3. Create necessary directories
+mkdir -p data results/improved/logs results/improved/checkpoints
+TUNER_SCRIPT="wandb_utils/wandb_tuner.py"
+# 4. Run Execution
+if [ "$TUNE_MODEL" = true ]; then
+    echo "================================================================"
+    echo "Automated Hyperparameter Tuning (W&B Sweep)"
+    echo "================================================================"
+    # We call the Tuner script instead of main.py
+    python3 $TUNER_SCRIPT
 else
   echo ">>> Skipping Hyperparameter Tuning. Using existing $CONFIG_FILE."
 fi
-
-# 3. Create necessary directories
-echo "Ensuring directory structure exists..."
-mkdir -p data results/improved/logs results/improved/runs results/improved/checkpoints
 
 # 4. Run the model
 echo "================================================================"
