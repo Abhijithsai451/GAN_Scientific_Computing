@@ -28,7 +28,7 @@ fi
 echo "Installing dependencies from requirements.txt..."
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
-TUNER_SCRIPT="utils/tuner.py"
+TUNER_SCRIPT="wandb_utils/wandb_tuner.py"
 
 if [ "$DO_TUNE" = true ]; then
   echo "================================================================"
