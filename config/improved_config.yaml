@@ -32,6 +32,6 @@ trainer:
   lr_d: 0.0001
   beta1: 0.5
   beta2: 0.999
-device: mps
+device: cuda
 use_pin: false
 seed: 42
