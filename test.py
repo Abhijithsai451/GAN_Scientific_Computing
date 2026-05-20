@@ -1,18 +1,23 @@
 import os
-
 import torch
+import wandb
 from torchvision.utils import save_image
-
 from data_processing.dataloader import get_dataloaders
 from models.discriminator import Discriminator
 from models.generator import Generator
 from utils.config_parser import get_args, Config
 from utils.logger_config import setup_logger
+from wandb_utils.wandb_config import WandBConfig
 
 
 def test_model():
     config_path = get_args()
     config = Config(config_path)
+
+    # Initialize WandB for evaluation run
+    wb_logger = WandBConfig(config_path, job_type="eval")
+    wandb_config = wb_logger.get_config()
+
     logger = setup_logger(config)
 
     DEVICE = config.device if torch.backends.mps.is_available() else "cpu"
@@ -30,12 +35,17 @@ def test_model():
 
     if not os.path.exists(gen_path):
         logger.info(f"Error: Checkpoints not found at {gen_path}. Run training first.")
+        wb_logger.finish()
         return
 
+    logger.info(f"Loading generator from: {gen_path}")
     generator.load_state_dict(torch.load(gen_path, map_location=DEVICE))
+    logger.info(f"Loading discriminator from: {disc_path}")
     discriminator.load_state_dict(torch.load(disc_path, map_location=DEVICE))
     generator.eval()
     discriminator.eval()
+    logger.info("Models loaded and set to evaluation mode.")
+
 
     _ , test_loader, _ = get_dataloaders(config)
 
@@ -66,7 +76,16 @@ def test_model():
     fake_acc = (correct_fake / total_samples) * 100
     logger.info(f"Accuracy on Real Test Images: {real_acc:.2f}%")
     logger.info(f"Accuracy on Generated Fake Images: {fake_acc:.2f}%")
-    print("\n>>> Generating Test Grid for All Classes...")
+
+    # Log evaluation metrics to WandB
+    wb_logger.log_step(metrics={
+        "test_real_accuracy": real_acc,
+        "test_fake_accuracy": fake_acc
+    })
+    logger.info("Test accuracies logged to WandB.")
+
+
+    logger.info("\n>>> Generating Test Grid for All Classes...")
     os.makedirs("results/test_results", exist_ok=True)
 
     # Creating 8 samples per class for all 10 classes
@@ -79,8 +98,19 @@ def test_model():
         save_path = f"results/test_results/final_test_grid_{config.project_name}.png"
         save_image(final_samples, save_path, nrow=8, normalize=True)
 
-    print(f"Final test grid saved to: {save_path}")
+    logger.info(f"Final test grid saved to: {save_path}")
+    # Log the final test grid to WandB
+    wb_logger.log_images(final_samples, "Final Test Grid", step=0)
+    logger.info(f"Final test grid logged to WandB.")
+
+    test_grid_table = wandb.Table(columns=["generated_image", "generated_label"])
+    for idx, img_tensor in enumerate(final_samples):
+        test_grid_table.add_data(wandb.Image(img_tensor), test_labels[idx].item())
+    wb_logger.log_step({"Final Test Grid Gallery": test_grid_table})
+    logger.info(f"Final test grid logged to WandB gallery.")
+
     print("--- Testing Complete ---")
+    wb_logger.finish()
 
 
 if __name__ == "__main__":
